@@ -22,14 +22,32 @@ expectType<Run<'(If 1 1 0)'>>(['1']);
 // Core functions:
 //   - concat
 expectType<Run<'(concat "a" "b")'>>(['ab']);
+expectType<Run<'(concat "hello" "world")'>>(['helloworld']);
 //   - equals
-expectType<Run<'(eq 1 2)'>>([false]);
-expectType<Run<'(eq 2 2)'>>([true]);
+expectType<Run<'(= 1 2)'>>([false]);
+expectType<Run<'(= 2 2)'>>([true]);
 //   - and
-expectType<Run<'(and True True)'>>([true]);
-expectType<Run<'(and True False)'>>([false]);
-expectType<Run<'(and False False)'>>([false]);
+expectType<Run<'(& True True)'>>([true]);
+expectType<Run<'(& True False)'>>([false]);
+expectType<Run<'(& False False)'>>([false]);
 //   - or
-expectType<Run<'(or True True)'>>([true]);
-expectType<Run<'(or True False)'>>([true]);
-expectType<Run<'(or False False)'>>([false]);
+expectType<Run<'(| True True)'>>([true]);
+expectType<Run<'(| True False)'>>([true]);
+expectType<Run<'(| False False)'>>([false]);
+//   - increase
+expectType<Run<'(+ 2)'>>(['3']);
+expectType<Run<'(+ 5)'>>(['6']);
+//   - decrease
+expectType<Run<'(- 2)'>>(['1']);
+expectType<Run<'(- 5)'>>(['4']);
+
+// Composite scripts
+expectType<Run<'(= (+ 1) 1)'>>([false]);
+expectType<Run<'(= (+ 1) 2)'>>([true]);
+expectType<Run<'(+ (+ 1))'>>(['3']);
+
+// Invalid syntax
+expectType<Run<'(+ (+ '>>(this as never);
+expectType<Run<'hello'>>(this as never);
+expectType<Run<'=+'>>(this as never);
+expectType<Run<') +'>>(this as never);

@@ -85,7 +85,7 @@ export type Parse<
   ? [{ type: 'String'; value: V }, Tail<T>]
   : F extends SymbolToken<infer V>
   ? [{ type: 'Variable'; value: V }, Tail<T>]
-  : [{ type: 'Null'; value: null }, []];
+  : [never, []];
 
 type ParseList<
   T extends Array<Token<any>>,

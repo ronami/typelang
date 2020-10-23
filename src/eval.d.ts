@@ -10,7 +10,6 @@ import {
 } from './parse';
 import type { Reverse, Tail, Unshift } from './arrayUtils';
 import { ConcatStrings, Cast } from './stringUtils';
-import type { Numbers } from './numberUtils';
 
 type Eval<E extends Expression> = E extends NullExpression
   ? null
@@ -24,7 +23,7 @@ type Eval<E extends Expression> = E extends NullExpression
   ? EvalIf<P, T, E>
   : E extends CallExpression<infer N, infer P>
   ? EvalCall<N, P>
-  : '';
+  : never;
 
 type Equals<A, B> = A extends B ? (B extends A ? true : false) : false;
 

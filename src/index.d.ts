@@ -4,7 +4,7 @@ import { AnalyzeSequence } from './analyze';
 import { EvalSequence } from './eval';
 import type { Cast } from './stringUtils';
 
-type Tokens = Tokenize<'(= (+ 1) 1)'>;
+type Tokens = Tokenize<'(+ 1 1)'>;
 type Parsed = ParseSequence<Tokens>;
 type Analyzed = AnalyzeSequence<Parsed>;
 type Result = EvalSequence<Analyzed>;
