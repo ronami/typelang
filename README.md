@@ -25,7 +25,7 @@ The language supports booleans, numbers, strings, conditionals (if statements), 
 - `Or`: Returns `true` if at least one of its arguments are `true`
 - `Join`: Concatenates two strings together
 
-### Try running the code
+### Try running the code ([See it live]())
 
 You can install `typelang` in your own project with `npm install typelang` or `yarn install typelang` (TypeScript 4.1 is required).
 
