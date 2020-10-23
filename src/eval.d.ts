@@ -61,7 +61,7 @@ type EvalIf<
   R = Eval<P>
 > = R extends false ? Eval<E> : Eval<T>;
 
-type Tokens = Tokenize<'(or True True)'>;
+type Tokens = Tokenize<'(eq 11 12)'>;
 type Parsed = ParseSequence<Tokens>;
 type Analyzed = AnalyzeSequence<Parsed>;
 type Result = EvalSequence<Analyzed>;
