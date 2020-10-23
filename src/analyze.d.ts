@@ -1,11 +1,9 @@
-import { Tokenize } from './tokenize';
 import {
   BooleanExpression,
   Expression,
   NullExpression,
   NumberExpression,
   PairExpression,
-  ParseSequence,
   StringExpression,
   VariableExpression,
 } from './parse';
@@ -28,7 +26,7 @@ export type Analyze<E extends Expression> = E extends NullExpression
 
 type isIfExpression<
   E extends PairExpression<any, any>
-> = E extends PairExpression<infer L, infer R>
+> = E extends PairExpression<infer L, any>
   ? L extends VariableExpression<infer H>
     ? H extends 'If'
       ? true

@@ -6,7 +6,6 @@ import {
   IfExpression,
   NullExpression,
   NumberExpression,
-  PairExpression,
   ParseSequence,
   StringExpression,
   VariableExpression,
