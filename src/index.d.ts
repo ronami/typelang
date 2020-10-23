@@ -9,9 +9,27 @@ type Tokenize<
 > = I extends ''
   ? Reverse<R>
   : C extends '('
-  ? Tokenize<EatFirstChar<I>, Unshift<R, C>>
+  ? Tokenize<
+      EatFirstChar<I>,
+      Unshift<
+        R,
+        {
+          type: 'paren';
+          value: '(';
+        }
+      >
+    >
   : C extends ')'
-  ? Tokenize<EatFirstChar<I>, Unshift<R, C>>
+  ? Tokenize<
+      EatFirstChar<I>,
+      Unshift<
+        R,
+        {
+          type: 'paren';
+          value: ')';
+        }
+      >
+    >
   : isNumberCharacter<C> extends true
   ? TokenizeNumber<I, R>
   : C extends '"'
@@ -27,7 +45,7 @@ type TokenizeNumber<
   ? Reverse<Unshift<R, A>>
   : isNumberCharacter<C> extends true
   ? TokenizeNumber<EatFirstChar<I>, R, ConcatStrings<A, FirstChar<I>>>
-  : Tokenize<I, Unshift<R, A>>;
+  : Tokenize<I, Unshift<R, { type: 'number'; value: A }>>;
 
 type TokenizeString<
   I extends string,
@@ -35,7 +53,7 @@ type TokenizeString<
   A extends string = '',
   C extends string = FirstChar<I>
 > = C extends '"'
-  ? Tokenize<EatFirstChar<I>, Unshift<R, A>>
+  ? Tokenize<EatFirstChar<I>, Unshift<R, { type: 'string'; value: A }>>
   : TokenizeString<EatFirstChar<I>, R, ConcatStrings<A, FirstChar<I>>>;
 
 type S = Tokenize<'("abc")'>;
