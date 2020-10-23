@@ -29,7 +29,7 @@ type isIfExpression<
   E extends PairExpression<any, any>
 > = E extends PairExpression<infer L, infer R>
   ? L extends VariableExpression<infer H>
-    ? H extends 'if'
+    ? H extends 'If'
       ? true
       : false
     : false
@@ -39,7 +39,7 @@ type BuildIfExpression<
   E extends PairExpression<any, any>
 > = E extends PairExpression<infer L, infer R>
   ? L extends VariableExpression<infer H>
-    ? H extends 'if'
+    ? H extends 'If'
       ? R extends PairExpression<infer L1, infer R1>
         ? R1 extends PairExpression<infer L2, infer R2>
           ? R2 extends PairExpression<infer L3, any>

@@ -2,6 +2,7 @@ import { Tokenize } from './tokenize';
 import {
   BooleanExpression,
   Expression,
+  IfExpression,
   NullExpression,
   NumberExpression,
   PairExpression,
@@ -12,8 +13,6 @@ import {
 import type { Reverse, Tail, Unshift } from './arrayUtils';
 import { AnalyzeSequence } from './analyze';
 
-// type Parse<I extends string> = Tokenize<I>;
-
 type Eval<E extends Expression> = E extends NullExpression
   ? null
   : E extends BooleanExpression<infer V>
@@ -22,9 +21,18 @@ type Eval<E extends Expression> = E extends NullExpression
   ? V
   : E extends StringExpression<infer V>
   ? V
+  : E extends IfExpression<infer P, infer T, infer E>
+  ? EvalIf<P, T, E>
   : '';
 
-type Tokens = Tokenize<'"hello"'>;
+type EvalIf<
+  P extends Expression,
+  T extends Expression,
+  E extends Expression,
+  R = Eval<P>
+> = R extends true ? Eval<T> : Eval<E>;
+
+type Tokens = Tokenize<'(If True 1 2)'>;
 type Parsed = ParseSequence<Tokens>;
 type Analyzed = AnalyzeSequence<Parsed>;
 type Result = Eval<Analyzed[0]>;
