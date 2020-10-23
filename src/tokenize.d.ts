@@ -49,7 +49,7 @@ export type Tokenize<
   ? TokenizeString<E, R>
   : isSymbolCharacter<C> extends true
   ? TokenizeSymbol<I, R>
-  : C;
+  : [];
 
 type TokenizeNumber<
   I extends string,

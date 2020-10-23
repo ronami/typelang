@@ -6,21 +6,24 @@ import {
   NumberExpression,
   PairExpression,
   ParseSequence,
+  StringExpression,
   VariableExpression,
 } from './parse';
 import type { Reverse, Tail, Unshift } from './arrayUtils';
 
-export type Analyze<E extends Expression> = E extends NullExpression<infer G>
-  ? NullExpression<G>
+export type Analyze<E extends Expression> = E extends NullExpression
+  ? NullExpression
   : E extends NumberExpression<infer G>
   ? NumberExpression<G>
   : E extends BooleanExpression<infer G>
   ? BooleanExpression<G>
+  : E extends StringExpression<infer G>
+  ? StringExpression<G>
   : E extends VariableExpression<infer G>
   ? VariableExpression<G>
   : E extends PairExpression<any, any>
   ? AnalyzePairExpression<E>
-  : NullExpression<null>;
+  : NullExpression;
 
 type isIfExpression<
   E extends PairExpression<any, any>
@@ -75,5 +78,3 @@ type AnalyzeSequence<
 > = E extends []
   ? Reverse<R>
   : AnalyzeSequence<Tail<E>, Unshift<R, Analyze<E[0]>>>;
-
-type S = AnalyzeSequence<ParseSequence<Tokenize<'(if 1 2 3)'>>>;

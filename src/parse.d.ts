@@ -15,9 +15,8 @@ export type BooleanExpression<V> = {
   value: V;
 };
 
-export type NullExpression<V> = {
+export type NullExpression = {
   type: 'Null';
-  value: V;
 };
 
 export type NumberExpression<V> = {
@@ -41,13 +40,25 @@ export type PairExpression<E1 extends Expression, E2 extends Expression> = {
   expr2: E2;
 };
 
+export type IfExpression<
+  P extends Expression,
+  T extends Expression,
+  E extends Expression
+> = {
+  type: 'If';
+  predicate: P;
+  thenClause: T;
+  elseClause: E;
+};
+
 export type Expression =
   | BooleanExpression<any>
-  | NullExpression<any>
+  | NullExpression
   | NumberExpression<any>
   | StringExpression<any>
   | VariableExpression<any>
-  | PairExpression<any, any>;
+  | PairExpression<any, any>
+  | IfExpression<any, any, any>;
 
 export type Parse<
   T extends Array<Token<any>>,
