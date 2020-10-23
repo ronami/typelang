@@ -14,14 +14,14 @@ export type Token<V> =
 
 export type Tokenize<
   I extends string,
-  R extends Array<Token<any>> = [],
-  C extends string = FirstChar<I>,
-  E extends string = EatFirstChar<I>
+  R extends Array<Token<any>> = []
 > = I extends ''
   ? Reverse<R>
-  : C extends '('
+  : FirstChar<I> extends ' '
+  ? Tokenize<EatFirstChar<I>, R>
+  : FirstChar<I> extends '('
   ? Tokenize<
-      E,
+      EatFirstChar<I>,
       Unshift<
         R,
         {
@@ -30,9 +30,9 @@ export type Tokenize<
         }
       >
     >
-  : C extends ')'
+  : FirstChar<I> extends ')'
   ? Tokenize<
-      E,
+      EatFirstChar<I>,
       Unshift<
         R,
         {
@@ -41,14 +41,12 @@ export type Tokenize<
         }
       >
     >
-  : C extends ' '
-  ? Tokenize<E, R>
-  : isNumberCharacter<C> extends true
-  ? TokenizeNumber<I, R, '', C>
-  : C extends '"'
-  ? TokenizeString<E, R>
-  : isSymbolCharacter<C> extends true
-  ? TokenizeSymbol<I, R, '', C>
+  : isNumberCharacter<FirstChar<I>> extends true
+  ? TokenizeNumber<I, R, '', FirstChar<I>>
+  : FirstChar<I> extends '"'
+  ? TokenizeString<EatFirstChar<I>, R>
+  : isSymbolCharacter<FirstChar<I>> extends true
+  ? TokenizeSymbol<I, R, '', FirstChar<I>>
   : [];
 
 type TokenizeNumber<

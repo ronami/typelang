@@ -68,17 +68,17 @@ type DecTable = {
 type EvalCall<N extends Expression, P extends Array<Expression>> = EvalSequence<
   P
 > extends infer G
-  ? N extends VariableExpression<'concat'>
+  ? N extends VariableExpression<'Join'>
     ? ConcatStrings<Cast<G, Array<any>>[0], Cast<G, Array<any>>[1]>
-    : N extends VariableExpression<'='>
+    : N extends VariableExpression<'Eq'>
     ? Equals<Cast<G, Array<any>>[0], Cast<G, Array<any>>[1]>
-    : N extends VariableExpression<'&'>
+    : N extends VariableExpression<'And'>
     ? And<Cast<G, Array<any>>[0], Cast<G, Array<any>>[1]>
-    : N extends VariableExpression<'|'>
+    : N extends VariableExpression<'Or'>
     ? Or<Cast<G, Array<any>>[0], Cast<G, Array<any>>[1]>
-    : N extends VariableExpression<'+'>
+    : N extends VariableExpression<'++'>
     ? Inc<Cast<G, Array<any>>[0]>
-    : N extends VariableExpression<'-'>
+    : N extends VariableExpression<'--'>
     ? Dec<Cast<G, Array<any>>[0]>
     : never
   : never;
