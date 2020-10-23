@@ -29,11 +29,23 @@ type Eval<E extends Expression> = E extends NullExpression
   ? EvalCall<N, P>
   : '';
 
+type Equals<A, B> = A extends B ? (B extends A ? true : false) : false;
+
+type And<A, B> = A extends true ? (B extends true ? true : false) : false;
+
+type Or<A, B> = A extends true ? true : B extends true ? true : false;
+
 type EvalCall<N extends Expression, P extends Array<Expression>> = EvalSequence<
   P
 > extends infer G
   ? N extends VariableExpression<'concat'>
     ? ConcatStrings<Cast<G, Array<any>>[0], Cast<G, Array<any>>[1]>
+    : N extends VariableExpression<'eq'>
+    ? Equals<Cast<G, Array<any>>[0], Cast<G, Array<any>>[1]>
+    : N extends VariableExpression<'and'>
+    ? And<Cast<G, Array<any>>[0], Cast<G, Array<any>>[1]>
+    : N extends VariableExpression<'or'>
+    ? Or<Cast<G, Array<any>>[0], Cast<G, Array<any>>[1]>
     : never
   : never;
 
@@ -50,7 +62,7 @@ type EvalIf<
   R = Eval<P>
 > = R extends false ? Eval<E> : Eval<T>;
 
-type Tokens = Tokenize<'(concat "a" "b")'>;
+type Tokens = Tokenize<'(or True True)'>;
 type Parsed = ParseSequence<Tokens>;
 type Analyzed = AnalyzeSequence<Parsed>;
 type Result = EvalSequence<Analyzed>;
