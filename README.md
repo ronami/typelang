@@ -83,6 +83,7 @@ type Result = Run<'(++ (++ (++ 4)))'>; // ['7']
 type Result = Run<'(If (Eq "2" "3") "y" "n")'>; // ['n']
 type Result = Run<'(If (Eq "4" "4") "y" "n")'>; // ['y']
 type Result = Run<'(Join (Join "a" "b") "a")'>; // ['aba']
+type Result = Run<'(Or (Eq 1 1) False)'>; // [true]
 
 // Invalid syntax
 type Result = Run<'(++ (++ '>; // never

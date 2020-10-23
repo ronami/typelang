@@ -50,6 +50,7 @@ expectType<Run<'(++ (++ (++ 4)))'>>(['7']);
 expectType<Run<'(If (Eq "2" "3") "y" "n")'>>(['n']);
 expectType<Run<'(If (Eq "4" "4") "y" "n")'>>(['y']);
 expectType<Run<'(Join (Join "a" "b") "a")'>>(['aba']);
+expectType<Run<'(Or (Eq 1 1) False)'>>([true]);
 
 // Invalid syntax
 expectType<Run<'(++ (++ '>>(this as never);
