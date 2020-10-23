@@ -1,6 +1,6 @@
 import { Reverse, Tail, Unshift } from './arrayUtils';
 import { EatFirstChar, FirstChar, ConcatStrings, Cast } from './stringUtils';
-import { isNumberCharacter, isSymbolCharacter } from './numberUtils';
+import { isNumberCharacter, isSymbolCharacter, Numbers } from './numberUtils';
 import {
   Tokenize,
   Token,
@@ -9,6 +9,45 @@ import {
   ParenToken,
   SymbolToken,
 } from './tokenize';
+
+export type BooleanExpression<V> = {
+  type: 'Boolean';
+  value: V;
+};
+
+export type NullExpression<V> = {
+  type: 'Null';
+  value: V;
+};
+
+export type NumberExpression<V> = {
+  type: 'Number';
+  value: V;
+};
+
+export type StringExpression<V> = {
+  type: 'String';
+  value: V;
+};
+
+export type VariableExpression<V> = {
+  type: 'Variable';
+  value: V;
+};
+
+export type PairExpression<V> = {
+  type: 'Pair';
+  expr1: Expression<any>;
+  expr2: Expression<any>;
+};
+
+export type Expression<V> =
+  | BooleanExpression<V>
+  | NullExpression<V>
+  | NumberExpression<V>
+  | StringExpression<V>
+  | VariableExpression<V>
+  | PairExpression<V>;
 
 export type Parse<
   T extends Array<Token<any>>,
@@ -38,20 +77,15 @@ type ParseList<
   ? [{ type: 'Null'; value: null }, Tail<T>]
   : ParsePair<Parse<T>>;
 
-type ParsePair<
-  R1 extends Array<any>
-  // R2 extends Array<any> = ParseList<R1[1]>
-> = ParseList<R1[1]> extends infer G
+type ParsePair<R1 extends Array<any>> = ParseList<R1[1]> extends infer G
   ? [
       { type: 'Pair'; expr1: R1[0]; expr2: Cast<G, Array<any>>[0] },
       Cast<G, Array<any>>[1],
     ]
   : never;
 
-type ParseSequence<
+export type ParseSequence<
   T extends Array<Token<any>>,
-  R extends Array<any> = [],
-  P extends Array<any> = Parse<T>
+  R extends Array<Expression<any>> = [],
+  P extends [Expression<any>, Array<Token<any>>] = Parse<T>
 > = T extends [] ? Reverse<R> : ParseSequence<P[1], Unshift<R, P[0]>>;
-
-type R = ParseSequence<Tokenize<'(add 11 22)'>>;
