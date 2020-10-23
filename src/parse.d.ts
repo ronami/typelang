@@ -35,19 +35,19 @@ export type VariableExpression<V> = {
   value: V;
 };
 
-export type PairExpression<V> = {
+export type PairExpression<E1 extends Expression, E2 extends Expression> = {
   type: 'Pair';
-  expr1: Expression<any>;
-  expr2: Expression<any>;
+  expr1: E1;
+  expr2: E2;
 };
 
-export type Expression<V> =
-  | BooleanExpression<V>
-  | NullExpression<V>
-  | NumberExpression<V>
-  | StringExpression<V>
-  | VariableExpression<V>
-  | PairExpression<V>;
+export type Expression =
+  | BooleanExpression<any>
+  | NullExpression<any>
+  | NumberExpression<any>
+  | StringExpression<any>
+  | VariableExpression<any>
+  | PairExpression<any, any>;
 
 export type Parse<
   T extends Array<Token<any>>,
@@ -86,6 +86,6 @@ type ParsePair<R1 extends Array<any>> = ParseList<R1[1]> extends infer G
 
 export type ParseSequence<
   T extends Array<Token<any>>,
-  R extends Array<Expression<any>> = [],
-  P extends [Expression<any>, Array<Token<any>>] = Parse<T>
+  R extends Array<Expression> = [],
+  P extends [Expression, Array<Token<any>>] = Parse<T>
 > = T extends [] ? Reverse<R> : ParseSequence<P[1], Unshift<R, P[0]>>;

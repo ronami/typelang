@@ -15,12 +15,13 @@ export type Token<V> =
 export type Tokenize<
   I extends string,
   R extends Array<Token<any>> = [],
-  C extends string = FirstChar<I>
+  C extends string = FirstChar<I>,
+  E extends string = EatFirstChar<I>
 > = I extends ''
   ? Reverse<R>
   : C extends '('
   ? Tokenize<
-      EatFirstChar<I>,
+      E,
       Unshift<
         R,
         {
@@ -31,7 +32,7 @@ export type Tokenize<
     >
   : C extends ')'
   ? Tokenize<
-      EatFirstChar<I>,
+      E,
       Unshift<
         R,
         {
@@ -41,11 +42,11 @@ export type Tokenize<
       >
     >
   : C extends ' '
-  ? Tokenize<EatFirstChar<I>, R>
+  ? Tokenize<E, R>
   : isNumberCharacter<C> extends true
   ? TokenizeNumber<I, R>
   : C extends '"'
-  ? TokenizeString<EatFirstChar<I>, R>
+  ? TokenizeString<E, R>
   : isSymbolCharacter<C> extends true
   ? TokenizeSymbol<I, R>
   : C;
@@ -56,17 +57,18 @@ type TokenizeNumber<
   A extends string = '',
   C extends string = FirstChar<I>
 > = isNumberCharacter<C> extends true
-  ? TokenizeNumber<EatFirstChar<I>, R, ConcatStrings<A, FirstChar<I>>>
+  ? TokenizeNumber<EatFirstChar<I>, R, ConcatStrings<A, C>>
   : Tokenize<I, Unshift<R, { type: 'number'; value: A }>>;
 
 type TokenizeString<
   I extends string,
   R extends Array<Token<any>>,
   A extends string = '',
-  C extends string = FirstChar<I>
+  C extends string = FirstChar<I>,
+  E extends string = EatFirstChar<I>
 > = C extends '"'
-  ? Tokenize<EatFirstChar<I>, Unshift<R, { type: 'string'; value: A }>>
-  : TokenizeString<EatFirstChar<I>, R, ConcatStrings<A, FirstChar<I>>>;
+  ? Tokenize<E, Unshift<R, { type: 'string'; value: A }>>
+  : TokenizeString<E, R, ConcatStrings<A, C>>;
 
 type TokenizeSymbol<
   I extends string,
@@ -74,5 +76,5 @@ type TokenizeSymbol<
   A extends string = '',
   C extends string = FirstChar<I>
 > = isSymbolCharacter<C> extends true
-  ? TokenizeSymbol<EatFirstChar<I>, R, ConcatStrings<A, FirstChar<I>>>
+  ? TokenizeSymbol<EatFirstChar<I>, R, ConcatStrings<A, C>>
   : Tokenize<I, Unshift<R, { type: 'symbol'; value: A }>>;
