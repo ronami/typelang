@@ -44,11 +44,11 @@ export type Tokenize<
   : C extends ' '
   ? Tokenize<E, R>
   : isNumberCharacter<C> extends true
-  ? TokenizeNumber<I, R>
+  ? TokenizeNumber<I, R, '', C>
   : C extends '"'
   ? TokenizeString<E, R>
   : isSymbolCharacter<C> extends true
-  ? TokenizeSymbol<I, R>
+  ? TokenizeSymbol<I, R, '', C>
   : [];
 
 type TokenizeNumber<

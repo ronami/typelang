@@ -30,9 +30,9 @@ type EvalIf<
   T extends Expression,
   E extends Expression,
   R = Eval<P>
-> = R extends true ? Eval<T> : Eval<E>;
+> = R extends false ? Eval<E> : Eval<T>;
 
-type Tokens = Tokenize<'(If True 1 2)'>;
+type Tokens = Tokenize<'(If True "2" "3")'>;
 type Parsed = ParseSequence<Tokens>;
 type Analyzed = AnalyzeSequence<Parsed>;
 type Result = Eval<Analyzed[0]>;
