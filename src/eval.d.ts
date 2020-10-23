@@ -1,4 +1,3 @@
-import { Tokenize } from './tokenize';
 import {
   BooleanExpression,
   CallExpression,
@@ -6,12 +5,10 @@ import {
   IfExpression,
   NullExpression,
   NumberExpression,
-  ParseSequence,
   StringExpression,
   VariableExpression,
 } from './parse';
 import type { Reverse, Tail, Unshift } from './arrayUtils';
-import { AnalyzeSequence } from './analyze';
 import { ConcatStrings, Cast } from './stringUtils';
 
 type Eval<E extends Expression> = E extends NullExpression
@@ -48,8 +45,7 @@ type EvalCall<N extends Expression, P extends Array<Expression>> = EvalSequence<
     : never
   : never;
 
-type EvalSequence<
-  //
+export type EvalSequence<
   E extends Array<any>,
   R extends Array<any> = []
 > = E extends [] ? Reverse<R> : EvalSequence<Tail<E>, Unshift<R, Eval<E[0]>>>;
@@ -60,8 +56,3 @@ type EvalIf<
   E extends Expression,
   R = Eval<P>
 > = R extends false ? Eval<E> : Eval<T>;
-
-type Tokens = Tokenize<'(eq 11 12)'>;
-type Parsed = ParseSequence<Tokens>;
-type Analyzed = AnalyzeSequence<Parsed>;
-type Result = EvalSequence<Analyzed>;
