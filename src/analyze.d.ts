@@ -8,6 +8,7 @@ import {
   ParseSequence,
   VariableExpression,
 } from './parse';
+import type { Reverse, Tail, Unshift } from './arrayUtils';
 
 export type Analyze<E extends Expression> = E extends NullExpression<infer G>
   ? NullExpression<G>
@@ -19,9 +20,19 @@ export type Analyze<E extends Expression> = E extends NullExpression<infer G>
   ? VariableExpression<G>
   : E extends PairExpression<any, any>
   ? AnalyzePairExpression<E>
-  : null;
+  : NullExpression<null>;
 
-type AnalyzePairExpression<
+type isIfExpression<
+  E extends PairExpression<any, any>
+> = E extends PairExpression<infer L, infer R>
+  ? L extends VariableExpression<infer H>
+    ? H extends 'if'
+      ? true
+      : false
+    : false
+  : false;
+
+type BuildIfExpression<
   E extends PairExpression<any, any>
 > = E extends PairExpression<infer L, infer R>
   ? L extends VariableExpression<infer H>
@@ -35,11 +46,34 @@ type AnalyzePairExpression<
                 thenClause: Analyze<L2>;
                 elseClause: Analyze<L3>;
               }
-            : 1
-          : 1
-        : 2
-      : 1
-    : 1
-  : 1;
+            : never
+          : never
+        : never
+      : never
+    : never
+  : never;
 
-type S = Analyze<ParseSequence<Tokenize<'(if 1 2 3)'>>[0]>;
+type BuildApplicationExpression<
+  E extends PairExpression<any, any>
+> = E extends PairExpression<infer L, infer R>
+  ? {
+      type: 'Application';
+      operator: Analyze<L>;
+      operands: Analyze<R>;
+    }
+  : never;
+
+type AnalyzePairExpression<E extends PairExpression<any, any>> = isIfExpression<
+  E
+> extends true
+  ? BuildIfExpression<E>
+  : BuildApplicationExpression<E>;
+
+type AnalyzeSequence<
+  E extends Array<any>,
+  R extends Array<any> = []
+> = E extends []
+  ? Reverse<R>
+  : AnalyzeSequence<Tail<E>, Unshift<R, Analyze<E[0]>>>;
+
+type S = AnalyzeSequence<ParseSequence<Tokenize<'(if 1 2 3)'>>>;
