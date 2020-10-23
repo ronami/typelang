@@ -77,7 +77,10 @@ export type Symbols =
   | '%'
   | '<'
   | '>'
-  | '#';
+  | '#'
+  | '='
+  | '|'
+  | '&';
 
 export type isSymbolCharacter<I extends string> = I extends Symbols
   ? true

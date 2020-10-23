@@ -1,8 +1,6 @@
 import { Reverse, Tail, Unshift } from './arrayUtils';
-import { EatFirstChar, FirstChar, ConcatStrings, Cast } from './stringUtils';
-import { isNumberCharacter, isSymbolCharacter, Numbers } from './numberUtils';
+import { Cast } from './stringUtils';
 import {
-  Tokenize,
   Token,
   NumberToken,
   StringToken,
