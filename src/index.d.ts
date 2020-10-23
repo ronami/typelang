@@ -14,13 +14,13 @@ type Tokenize<
   ? Tokenize<EatFirstChar<I>, Unshift<R, C>>
   : isNumberCharacter<C> extends true
   ? TokenizeNumber<I, R>
-  : isSymbolCharacter<C> extends true
-  ? TokenizeSymbol<I, R>
-  : 'error';
+  : C extends '"'
+  ? TokenizeString<EatFirstChar<I>, R>
+  : C;
 
 type TokenizeNumber<
   I extends string,
-  R extends Array<any>,
+  R extends Array<string>,
   A extends string = '',
   C extends string = FirstChar<I>
 > = I extends ''
@@ -29,15 +29,13 @@ type TokenizeNumber<
   ? TokenizeNumber<EatFirstChar<I>, R, ConcatStrings<A, FirstChar<I>>>
   : Tokenize<I, Unshift<R, A>>;
 
-type TokenizeSymbol<
+type TokenizeString<
   I extends string,
-  R extends Array<any>,
+  R extends Array<string>,
   A extends string = '',
   C extends string = FirstChar<I>
-> = I extends ''
-  ? Reverse<Unshift<R, A>>
-  : isSymbolCharacter<C> extends true
-  ? TokenizeSymbol<EatFirstChar<I>, R, ConcatStrings<A, FirstChar<I>>>
-  : Tokenize<I, Unshift<R, A>>;
+> = C extends '"'
+  ? Tokenize<EatFirstChar<I>, Unshift<R, A>>
+  : TokenizeString<EatFirstChar<I>, R, ConcatStrings<A, FirstChar<I>>>;
 
-type S = Tokenize<'(abc)'>;
+type S = Tokenize<'("abc")'>;
