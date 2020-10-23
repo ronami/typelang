@@ -10,6 +10,7 @@ import {
   VariableExpression,
 } from './parse';
 import type { Reverse, Tail, Unshift } from './arrayUtils';
+import type { Cast } from './stringUtils';
 
 export type Analyze<E extends Expression> = E extends NullExpression
   ? NullExpression
@@ -56,21 +57,32 @@ type BuildIfExpression<
     : never
   : never;
 
-type BuildApplicationExpression<
+type PairToList<
+  E extends Expression,
+  A extends Array<Expression> = []
+> = E extends NullExpression
+  ? Reverse<A>
+  : E extends PairExpression<infer L, infer R>
+  ? PairToList<R, Unshift<A, L>>
+  : never;
+
+type BuildCallExpression<
   E extends PairExpression<any, any>
 > = E extends PairExpression<infer L, infer R>
-  ? {
-      type: 'Application';
-      operator: Analyze<L>;
-      operands: Analyze<R>;
-    }
+  ? PairToList<R> extends infer G
+    ? {
+        type: 'Call';
+        operator: Analyze<L>;
+        operands: AnalyzeSequence<Cast<G, Array<Expression>>>;
+      }
+    : never
   : never;
 
 type AnalyzePairExpression<E extends PairExpression<any, any>> = isIfExpression<
   E
 > extends true
   ? BuildIfExpression<E>
-  : BuildApplicationExpression<E>;
+  : BuildCallExpression<E>;
 
 type AnalyzeSequence<
   E extends Array<any>,

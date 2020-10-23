@@ -32,7 +32,7 @@ type EvalIf<
   R = Eval<P>
 > = R extends false ? Eval<E> : Eval<T>;
 
-type Tokens = Tokenize<'(If True "2" "3")'>;
+type Tokens = Tokenize<'(add 1 2 3)'>;
 type Parsed = ParseSequence<Tokens>;
 type Analyzed = AnalyzeSequence<Parsed>;
 type Result = Eval<Analyzed[0]>;

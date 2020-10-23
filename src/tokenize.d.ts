@@ -44,7 +44,7 @@ export type Tokenize<
   : C extends ' '
   ? Tokenize<E, R>
   : isNumberCharacter<C> extends true
-  ? TokenizeNumber<I, R, '', C>
+  ? TokenizeNumber<E, R, '', C>
   : C extends '"'
   ? TokenizeString<E, R>
   : isSymbolCharacter<C> extends true
@@ -56,9 +56,7 @@ type TokenizeNumber<
   R extends Array<Token<any>>,
   A extends string = '',
   C extends string = FirstChar<I>
-> = isNumberCharacter<C> extends true
-  ? TokenizeNumber<EatFirstChar<I>, R, ConcatStrings<A, C>>
-  : Tokenize<I, Unshift<R, { type: 'number'; value: A }>>;
+> = Tokenize<I, Unshift<R, { type: 'number'; value: C }>>;
 
 type TokenizeString<
   I extends string,

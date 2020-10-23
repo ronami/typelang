@@ -51,6 +51,15 @@ export type IfExpression<
   elseClause: E;
 };
 
+export type CallExpression<
+  N extends Expression,
+  P extends Array<Expression>
+> = {
+  type: 'Call';
+  operator: N;
+  operands: P;
+};
+
 export type Expression =
   | BooleanExpression<any>
   | NullExpression
@@ -58,7 +67,8 @@ export type Expression =
   | StringExpression<any>
   | VariableExpression<any>
   | PairExpression<any, any>
-  | IfExpression<any, any, any>;
+  | IfExpression<any, any, any>
+  | CallExpression<any, Array<any>>;
 
 export type Parse<
   T extends Array<Token<any>>,
