@@ -1,10 +1,10 @@
-## 🦉 TypeLang
+## 🌳 TypeLang
 
 > A functional language implemented purely in TypeScript's type-system
 
 ### Introduction
 
-_☝ Please note that this project is meant to be used for fun and learning purposes and not for practical use._
+
 
 ![showcase](assets/showcase.gif)
 
