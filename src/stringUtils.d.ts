@@ -5,3 +5,5 @@ export type FirstChar<
 > = I extends `${infer T}${EatFirstChar<I>}` ? T : ''
 
 export type ConcatStrings<A extends string, B extends string> = `${A}${B}`;
+
+export type Cast<A, B> = A extends B ? A : B;

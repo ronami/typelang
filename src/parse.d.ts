@@ -1,5 +1,5 @@
 import { Reverse, Tail, Unshift } from './arrayUtils';
-import { EatFirstChar, FirstChar, ConcatStrings } from './stringUtils';
+import { EatFirstChar, FirstChar, ConcatStrings, Cast } from './stringUtils';
 import { isNumberCharacter, isSymbolCharacter } from './numberUtils';
 import {
   Tokenize,
@@ -36,13 +36,17 @@ type ParseList<
   ? [{ type: 'Null'; value: null }, []]
   : F extends ParenToken<')'>
   ? [{ type: 'Null'; value: null }, Tail<T>]
-  : ParsePair<T>;
+  : ParsePair<Parse<T>>;
 
 type ParsePair<
-  T extends Array<Token<any>>,
-  R1 = Parse<T>,
-  R2 = ParseList<R1[1]>
-> = [{ type: 'Pair'; expr1: R1[0]; expr2: R2[0] }, R2[1]];
+  R1 extends Array<any>
+  // R2 extends Array<any> = ParseList<R1[1]>
+> = ParseList<R1[1]> extends infer G
+  ? [
+      { type: 'Pair'; expr1: R1[0]; expr2: Cast<G, Array<any>>[0] },
+      Cast<G, Array<any>>[1],
+    ]
+  : never;
 
 type ParseSequence<
   T extends Array<Token<any>>,
