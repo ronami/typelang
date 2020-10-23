@@ -1,10 +1,20 @@
-import { Head, Reverse, Tail, Unshift } from './arrayUtils';
+import { Reverse, Unshift } from './arrayUtils';
 import { EatFirstChar, FirstChar, ConcatStrings } from './stringUtils';
 import { isNumberCharacter, isLetterCharacter } from './numberUtils';
 
-type Tokenize<
+export type ParenToken<V> = { type: 'paren'; value: V };
+export type NumberToken<V> = { type: 'number'; value: V };
+export type StringToken<V> = { type: 'string'; value: V };
+export type NameToken<V> = { type: 'name'; value: V };
+export type Token<V> =
+  | ParenToken<V>
+  | NumberToken<V>
+  | StringToken<V>
+  | NameToken<V>;
+
+export type Tokenize<
   I extends string,
-  R extends Array<any> = [],
+  R extends Array<Token<any>> = [],
   C extends string = FirstChar<I>
 > = I extends ''
   ? Reverse<R>
@@ -42,7 +52,7 @@ type Tokenize<
 
 type TokenizeNumber<
   I extends string,
-  R extends Array<string>,
+  R extends Array<Token<any>>,
   A extends string = '',
   C extends string = FirstChar<I>
 > = isNumberCharacter<C> extends true
@@ -51,7 +61,7 @@ type TokenizeNumber<
 
 type TokenizeString<
   I extends string,
-  R extends Array<string>,
+  R extends Array<Token<any>>,
   A extends string = '',
   C extends string = FirstChar<I>
 > = C extends '"'
@@ -60,11 +70,9 @@ type TokenizeString<
 
 type TokenizeName<
   I extends string,
-  R extends Array<string>,
+  R extends Array<Token<any>>,
   A extends string = '',
   C extends string = FirstChar<I>
 > = isLetterCharacter<C> extends true
   ? TokenizeName<EatFirstChar<I>, R, ConcatStrings<A, FirstChar<I>>>
   : Tokenize<I, Unshift<R, { type: 'name'; value: A }>>;
-
-type S = Tokenize<'"aaa" 123'>;
