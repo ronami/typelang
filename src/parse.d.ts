@@ -27,9 +27,22 @@ export type Parse<
   ? [{ type: 'String'; value: V }, Tail<T>]
   : F extends SymbolToken<infer V>
   ? [{ type: 'Variable'; value: V }, Tail<T>]
-  : [{ type: 'Null'; value: null }, Tail<T>];
+  : [{ type: 'Null'; value: null }, []];
 
-type ParseList<T extends Array<Token<any>>> = T extends [] ? [] : [];
+type ParseList<
+  T extends Array<Token<any>>,
+  F extends Token<any> = T[0]
+> = T extends []
+  ? [{ type: 'Null'; value: null }, []]
+  : F extends ParenToken<')'>
+  ? [{ type: 'Null'; value: null }, Tail<T>]
+  : ParsePair<T>;
+
+type ParsePair<
+  T extends Array<Token<any>>,
+  R1 = Parse<T>,
+  R2 = ParseList<R1[1]>
+> = [{ type: 'Pair'; expr1: R1[0]; expr2: R2[0] }, R2[1]];
 
 type ParseSequence<
   T extends Array<Token<any>>,
@@ -37,4 +50,4 @@ type ParseSequence<
   P extends Array<any> = Parse<T>
 > = T extends [] ? Reverse<R> : ParseSequence<P[1], Unshift<R, P[0]>>;
 
-type R = ParseSequence<Tokenize<'add 12 "hello"'>>;
+type R = ParseSequence<Tokenize<'(add 11 22)'>>;
