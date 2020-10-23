@@ -4,7 +4,7 @@ export type isNumberCharacter<I extends string> = I extends Numbers
   ? true
   : false;
 
-type Symbols =
+type Letters =
   | 'a'
   | 'b'
   | 'c'
@@ -56,29 +56,8 @@ type Symbols =
   | 'W'
   | 'X'
   | 'Y'
-  | 'Z'
-  | '0'
-  | '1'
-  | '2'
-  | '3'
-  | '4'
-  | '5'
-  | '6'
-  | '7'
-  | '8'
-  | '9'
-  | '_'
-  | '!'
-  | '?'
-  | '-'
-  | '+'
-  | '*'
-  | '/'
-  | '%'
-  | '<'
-  | '>'
-  | '#';
+  | 'Z';
 
-export type isSymbolCharacter<I extends string> = I extends Symbols
+export type isLetterCharacter<I extends string> = I extends Letters
   ? true
   : false;
