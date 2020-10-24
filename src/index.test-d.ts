@@ -52,6 +52,10 @@ expectType<Run<'(If (Eq "4" "4") "y" "n")'>>('y');
 expectType<Run<'(Join (Join "a" "b") "a")'>>('aba');
 expectType<Run<'(Or (Eq 1 1) False)'>>(true);
 
+// Return last expression
+expectType<Run<'(++ 1) (++ 2)'>>('3');
+expectType<Run<'(Eq 1 1) (Eq 2 3)'>>(false);
+
 // Invalid syntax
 expectType<Run<'(++ (++ '>>(this as never);
 expectType<Run<'hello'>>(this as never);

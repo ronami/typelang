@@ -85,6 +85,10 @@ type Result = Run<'(If (Eq "4" "4") "y" "n")'>; // 'y'
 type Result = Run<'(Join (Join "a" "b") "a")'>; // 'aba'
 type Result = Run<'(Or (Eq 1 1) False)'>; // true
 
+// Return last expression
+type Result = Run<'(++ 1) (++ 2)'>; // '3'
+type Result = Run<'(Eq 1 1) (Eq 2 3)'>; // false
+
 // Invalid syntax
 type Result = Run<'(++ (++ '>; // never
 type Result = Run<'hello'>; // never
