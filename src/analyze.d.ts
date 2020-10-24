@@ -1,4 +1,4 @@
-import {
+import type {
   BooleanExpression,
   Expression,
   NullExpression,

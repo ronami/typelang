@@ -1,10 +1,10 @@
-import { Tokenize } from './tokenize';
-import { ParseSequence } from './parse';
-import { AnalyzeSequence } from './analyze';
-import { EvalAndReturnLast } from './eval';
+import type { Tokenize } from './tokenize';
+import type { ParseSequence } from './parse';
+import type { AnalyzeSequence } from './analyze';
+import type { EvalAndReturnLast } from './eval';
 import type { Cast } from './stringUtils';
 
-type Tokens = Tokenize<'(++ 1) (++ 2)'>;
+type Tokens = Tokenize<'(+ 1) (++ 2)'>;
 type Parsed = ParseSequence<Tokens>;
 type Analyzed = AnalyzeSequence<Parsed>;
 type Result = EvalAndReturnLast<Analyzed>;

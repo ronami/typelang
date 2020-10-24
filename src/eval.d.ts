@@ -1,4 +1,4 @@
-import {
+import type {
   BooleanExpression,
   CallExpression,
   Expression,
@@ -9,8 +9,8 @@ import {
   VariableExpression,
 } from './parse';
 import type { Reverse, Tail, Unshift } from './arrayUtils';
-import { ConcatStrings, Cast } from './stringUtils';
-import { And, Dec, Equals, Inc, Or } from './builtInFunctions';
+import type { ConcatStrings, Cast } from './stringUtils';
+import type { And, Dec, Equals, Inc, Or } from './builtInFunctions';
 
 type Eval<E extends Expression> = E extends NullExpression
   ? null

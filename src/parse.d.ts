@@ -1,6 +1,6 @@
-import { Reverse, Tail, Unshift } from './arrayUtils';
-import { Cast } from './stringUtils';
-import {
+import type { Reverse, Tail, Unshift } from './arrayUtils';
+import type { Cast } from './stringUtils';
+import type {
   Token,
   NumberToken,
   StringToken,
