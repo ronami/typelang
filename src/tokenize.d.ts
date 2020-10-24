@@ -64,10 +64,10 @@ type TokenizeString<
   A extends string = '',
   C extends string = FirstChar<I>,
   E extends string = EatFirstChar<I>
-> = I extends ''
-  ? never
-  : C extends '"'
+> = C extends '"'
   ? Tokenize<E, Unshift<R, { type: 'string'; value: A }>>
+  : I extends ''
+  ? never
   : TokenizeString<E, R, ConcatStrings<A, C>>;
 
 type TokenizeSymbol<
