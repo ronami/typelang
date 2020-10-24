@@ -54,8 +54,8 @@ export type CallExpression<
   P extends Array<Expression>
 > = {
   type: 'Call';
-  operator: N;
-  operands: P;
+  callee: N;
+  arguments: P;
 };
 
 export type Expression =

@@ -70,8 +70,8 @@ type BuildCallExpression<
   ? PairToList<R> extends infer G
     ? {
         type: 'Call';
-        operator: Analyze<L>;
-        operands: AnalyzeSequence<Cast<G, Array<Expression>>>;
+        callee: Analyze<L>;
+        arguments: AnalyzeSequence<Cast<G, Array<Expression>>>;
       }
     : never
   : never;
