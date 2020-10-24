@@ -3,7 +3,7 @@ import type {
   Expression,
   NullExpression,
   NumberExpression,
-  PairExpression,
+  TupleExpression,
   StringExpression,
   VariableExpression,
 } from './parse';
@@ -20,13 +20,13 @@ export type Analyze<E extends Expression> = E extends NullExpression
   ? StringExpression<G>
   : E extends VariableExpression<infer G>
   ? VariableExpression<G>
-  : E extends PairExpression<any, any>
-  ? AnalyzePairExpression<E>
+  : E extends TupleExpression<any, any>
+  ? AnalyzeTupleExpression<E>
   : NullExpression;
 
 type isIfExpression<
-  E extends PairExpression<any, any>
-> = E extends PairExpression<infer L, any>
+  E extends TupleExpression<any, any>
+> = E extends TupleExpression<infer L, any>
   ? L extends VariableExpression<infer H>
     ? H extends 'If'
       ? true
@@ -35,13 +35,13 @@ type isIfExpression<
   : false;
 
 type BuildIfExpression<
-  E extends PairExpression<any, any>
-> = E extends PairExpression<infer L, infer R>
+  E extends TupleExpression<any, any>
+> = E extends TupleExpression<infer L, infer R>
   ? L extends VariableExpression<infer H>
     ? H extends 'If'
-      ? R extends PairExpression<infer L1, infer R1>
-        ? R1 extends PairExpression<infer L2, infer R2>
-          ? R2 extends PairExpression<infer L3, any>
+      ? R extends TupleExpression<infer L1, infer R1>
+        ? R1 extends TupleExpression<infer L2, infer R2>
+          ? R2 extends TupleExpression<infer L3, any>
             ? {
                 type: 'If';
                 predicate: Analyze<L1>;
@@ -55,19 +55,19 @@ type BuildIfExpression<
     : never
   : never;
 
-type PairToList<
+type TupleToList<
   E extends Expression,
   A extends Array<Expression> = []
 > = E extends NullExpression
   ? Reverse<A>
-  : E extends PairExpression<infer L, infer R>
-  ? PairToList<R, Unshift<A, L>>
+  : E extends TupleExpression<infer L, infer R>
+  ? TupleToList<R, Unshift<A, L>>
   : never;
 
 type BuildCallExpression<
-  E extends PairExpression<any, any>
-> = E extends PairExpression<infer L, infer R>
-  ? PairToList<R> extends infer G
+  E extends TupleExpression<any, any>
+> = E extends TupleExpression<infer L, infer R>
+  ? TupleToList<R> extends infer G
     ? {
         type: 'Call';
         callee: Analyze<L>;
@@ -76,9 +76,9 @@ type BuildCallExpression<
     : never
   : never;
 
-type AnalyzePairExpression<E extends PairExpression<any, any>> = isIfExpression<
-  E
-> extends true
+type AnalyzeTupleExpression<
+  E extends TupleExpression<any, any>
+> = isIfExpression<E> extends true
   ? BuildIfExpression<E>
   : BuildCallExpression<E>;
 

@@ -32,8 +32,8 @@ export type VariableExpression<V> = {
   value: V;
 };
 
-export type PairExpression<E1 extends Expression, E2 extends Expression> = {
-  type: 'Pair';
+export type TupleExpression<E1 extends Expression, E2 extends Expression> = {
+  type: 'Tuple';
   expr1: E1;
   expr2: E2;
 };
@@ -64,7 +64,7 @@ export type Expression =
   | NumberExpression<any>
   | StringExpression<any>
   | VariableExpression<any>
-  | PairExpression<any, any>
+  | TupleExpression<any, any>
   | IfExpression<any, any, any>
   | CallExpression<any, Array<any>>;
 
@@ -94,11 +94,11 @@ type ParseList<
   ? [{ type: 'Null'; value: null }, []]
   : F extends ParenToken<')'>
   ? [{ type: 'Null'; value: null }, Tail<T>]
-  : ParsePair<Parse<T>>;
+  : ParseTuple<Parse<T>>;
 
-type ParsePair<R1 extends Array<any>> = ParseList<R1[1]> extends infer G
+type ParseTuple<R1 extends Array<any>> = ParseList<R1[1]> extends infer G
   ? [
-      { type: 'Pair'; expr1: R1[0]; expr2: Cast<G, Array<any>>[0] },
+      { type: 'Tuple'; expr1: R1[0]; expr2: Cast<G, Array<any>>[0] },
       Cast<G, Array<any>>[1],
     ]
   : never;
