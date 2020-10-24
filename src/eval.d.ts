@@ -88,9 +88,13 @@ export type EvalSequence<
   R extends Array<any> = []
 > = E extends [] ? Reverse<R> : EvalSequence<Tail<E>, Unshift<R, Eval<E[0]>>>;
 
+export type EvalAndReturnLast<
+  E extends Array<any>,
+  R extends any = null
+> = E extends [] ? R : EvalAndReturnLast<Tail<E>, Eval<E[0]>>;
+
 type EvalIf<
   P extends Expression,
   T extends Expression,
-  E extends Expression,
-  R = Eval<P>
-> = R extends false ? Eval<E> : Eval<T>;
+  E extends Expression
+> = Eval<P> extends false ? Eval<E> : Eval<T>;

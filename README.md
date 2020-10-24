@@ -35,55 +35,55 @@ See the following example live by [clicking here]():
 import { Run } from "typelang";
 
 // Empty
-type Result = Run<''>; // []
+type Result = Run<''>; // null
 
 // Numbers
-type Result = Run<'123'>; // [123]
+type Result = Run<'123'>; // 123
 
 // Strings
-type Result = Run<'"hello"'>; // ['hello']
+type Result = Run<'"hello"'>; // 'hello'
 
 // Booleans
-type Result = Run<'True'>; // [true]
-type Result = Run<'False'>; // [false]
+type Result = Run<'True'>; // true
+type Result = Run<'False'>; // false
 
 // Conditionals
-type Result = Run<'(If True 1 0)'>; // ['1']
-type Result = Run<'(If False 1 0)'>; // ['0']
-type Result = Run<'(If 1 1 0)'>; // ['1']
+type Result = Run<'(If True 1 0)'>; // '1'
+type Result = Run<'(If False 1 0)'>; // '0'
+type Result = Run<'(If 1 1 0)'>; // '1'
 
 // Core functions:
 //   - join (concat)
-type Result = Run<'(Join "a" "b")'>; // ['ab']
-type Result = Run<'(Join "hello" "world")'>; // ['helloworld']
+type Result = Run<'(Join "a" "b")'>; // 'ab'
+type Result = Run<'(Join "hello" "world")'>; // 'helloworld'
 //   - equals
-type Result = Run<'(Eq 1 2)'>; // [false]
-type Result = Run<'(Eq 2 2)'>; // [true]
+type Result = Run<'(Eq 1 2)'>; // false
+type Result = Run<'(Eq 2 2)'>; // true
 //   - and
-type Result = Run<'(And True True)'>; // [true]
-type Result = Run<'(And True False)'>; // [false]
-type Result = Run<'(And False False)'>; // [false]
+type Result = Run<'(And True True)'>; // true
+type Result = Run<'(And True False)'>; // false
+type Result = Run<'(And False False)'>; // false
 //   - or
-type Result = Run<'(Or True True)'>; // [true]
-type Result = Run<'(Or True False)'>; // [true]
-type Result = Run<'(Or False False)'>; // [false]
+type Result = Run<'(Or True True)'>; // true
+type Result = Run<'(Or True False)'>; // true
+type Result = Run<'(Or False False)'>; // false
 //   - increase
-type Result = Run<'(++ 2)'>; // ['3']
-type Result = Run<'(++ 5)'>; // ['6']
+type Result = Run<'(++ 2)'>; // '3'
+type Result = Run<'(++ 5)'>; // '6'
 //   - decrease
-type Result = Run<'(-- 2)'>; // ['1']
-type Result = Run<'(-- 5)'>; // ['4']
+type Result = Run<'(-- 2)'>; // '1'
+type Result = Run<'(-- 5)'>; // '4'
 
 // Composite scripts
-type Result = Run<'(Eq (++ 1) 1)'>; // [false]
-type Result = Run<'(Eq (++ (++ 1)) 3)'>; // [true]
-type Result = Run<'(Eq (Join "a" "b") "ab")'>; // [true]
-type Result = Run<'(Eq (Join "ab" "b") "aa")'>; // [false]
-type Result = Run<'(++ (++ (++ 4)))'>; // ['7']
-type Result = Run<'(If (Eq "2" "3") "y" "n")'>; // ['n']
-type Result = Run<'(If (Eq "4" "4") "y" "n")'>; // ['y']
-type Result = Run<'(Join (Join "a" "b") "a")'>; // ['aba']
-type Result = Run<'(Or (Eq 1 1) False)'>; // [true]
+type Result = Run<'(Eq (++ 1) 1)'>; // false
+type Result = Run<'(Eq (++ (++ 1)) 3)'>; // true
+type Result = Run<'(Eq (Join "a" "b") "ab")'>; // true
+type Result = Run<'(Eq (Join "ab" "b") "aa")'>; // false
+type Result = Run<'(++ (++ (++ 4)))'>; // '7'
+type Result = Run<'(If (Eq "2" "3") "y" "n")'>; // 'n'
+type Result = Run<'(If (Eq "4" "4") "y" "n")'>; // 'y'
+type Result = Run<'(Join (Join "a" "b") "a")'>; // 'aba'
+type Result = Run<'(Or (Eq 1 1) False)'>; // true
 
 // Invalid syntax
 type Result = Run<'(++ (++ '>; // never
