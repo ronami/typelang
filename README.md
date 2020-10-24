@@ -18,16 +18,16 @@ The syntax is Lisp-like. If you're not familiar with it, here's a quick comparis
 
 The language supports booleans, numbers, strings, conditionals (if statements), and calling the following buit-in functions:
 
-- `++`: Increases a number by one
-- `--`: Decreases a number by one
-- `Eq`: Checks if both of its arguments are equal
-- `And`: Returns `true` if both of its arguments are `true`
-- `Or`: Returns `true` if at least one of its arguments are `true`
-- `Join`: Concatenates two strings together
+- `++`: Increases a number by one.
+- `--`: Decreases a number by one.
+- `Eq`: Checks if both of its arguments are equal.
+- `And`: Returns `true` if both of its arguments are `true`.
+- `Or`: Returns `true` if at least one of its arguments are `true`.
+- `Join`: Concatenates two strings together.
 
 ### Try running the code ([See it live]())
 
-You can install `typelang` in your own project with `npm install typelang` or `yarn install typelang` (TypeScript 4.1 is required).
+Install `typelang` with `npm install typelang` or `yarn install typelang` (requires TypeScript v4.1.0 or above).
 
 See the following example live by [clicking here]():
 
@@ -96,15 +96,11 @@ type Result = Run<'=++'>; // never
 type Result = Run<') ++'>; // never
 ```
 
-**Note**: TypeScript has a limitation on how deep its computation can go. Because of this we're limited to small inputs, if you're getting the following error: `Type instantiation is excessively deep and possibly infinite`, please try using a smaller input.
+**Note**: TypeScript has a limitation on how deep its computation can get. Because of this, we're limited to small inputs. If you're getting the following error: `Type instantiation is excessively deep and possibly infinite`, please try using a smaller input.
 
 ### Additional links
 
-- [Utility TypeScript types](https://www.typescriptlang.org/docs/handbook/utility-types.html)
-- [Advanced TypeScript types](https://www.typescriptlang.org/docs/handbook/advanced-types.html)
-- [Typing the Technical Interview in TypeScript](https://gal.hagever.com/posts/typing-the-technical-interview-in-typescript/)
+- [The Super Tiny Compiler](https://github.com/jamiebuilds/the-super-tiny-compiler)
 - [TypeScripts Type System is Turing Complete](https://github.com/microsoft/TypeScript/issues/14833)
-- [Emulating a 4-Bit Virtual Machine in TypeScript's type system](https://gist.github.com/acutmore/9d2ce837f019608f26ff54e0b1c23d6e)
-- [Algorithms and data structures implemented in JavaScript](https://github.com/trekhleb/javascript-algorithms)
-- [How to master advanced TypeScript patterns](https://github.com/pirix-gh/medium/blob/master/types-curry-ramda/src/index.ts)
+- [Typing the Technical Interview in TypeScript](https://gal.hagever.com/posts/typing-the-technical-interview-in-typescript/)
 - [Functions and algorithms implemented purely with TypeScript's type system](https://github.com/ronami/meta-typing)
