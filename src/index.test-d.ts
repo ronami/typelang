@@ -20,24 +20,24 @@ expectType<Run<'(If False 1 0)'>>('0');
 expectType<Run<'(If 1 1 0)'>>('1');
 
 // Core functions:
-//   - join (concat)
+//   - Join (concat)
 expectType<Run<'(Join "a" "b")'>>('ab');
 expectType<Run<'(Join "hello" "world")'>>('helloworld');
-//   - equals
+//   - Equals
 expectType<Run<'(Eq 1 2)'>>(false);
 expectType<Run<'(Eq 2 2)'>>(true);
-//   - and
+//   - Logical and
 expectType<Run<'(And True True)'>>(true);
 expectType<Run<'(And True False)'>>(false);
 expectType<Run<'(And False False)'>>(false);
-//   - or
+//   - Logical or
 expectType<Run<'(Or True True)'>>(true);
 expectType<Run<'(Or True False)'>>(true);
 expectType<Run<'(Or False False)'>>(false);
-//   - increase
+//   - Increase by one
 expectType<Run<'(++ 2)'>>('3');
 expectType<Run<'(++ 5)'>>('6');
-//   - decrease
+//   - Decrease by one
 expectType<Run<'(-- 2)'>>('1');
 expectType<Run<'(-- 5)'>>('4');
 
@@ -52,7 +52,7 @@ expectType<Run<'(If (Eq "4" "4") "y" "n")'>>('y');
 expectType<Run<'(Join (Join "a" "b") "a")'>>('aba');
 expectType<Run<'(Or (Eq 1 1) False)'>>(true);
 
-// Return last expression
+// Should return the last expression
 expectType<Run<'(++ 1) (++ 2)'>>('3');
 expectType<Run<'(Eq 1 1) (Eq 2 3)'>>(false);
 

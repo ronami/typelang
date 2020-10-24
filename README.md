@@ -53,24 +53,24 @@ type Result = Run<'(If False 1 0)'>; // '0'
 type Result = Run<'(If 1 1 0)'>; // '1'
 
 // Core functions:
-//   - join (concat)
+//   - Join (concat)
 type Result = Run<'(Join "a" "b")'>; // 'ab'
 type Result = Run<'(Join "hello" "world")'>; // 'helloworld'
-//   - equals
+//   - Equals
 type Result = Run<'(Eq 1 2)'>; // false
 type Result = Run<'(Eq 2 2)'>; // true
-//   - and
+//   - Logical and
 type Result = Run<'(And True True)'>; // true
 type Result = Run<'(And True False)'>; // false
 type Result = Run<'(And False False)'>; // false
-//   - or
+//   - Logical or
 type Result = Run<'(Or True True)'>; // true
 type Result = Run<'(Or True False)'>; // true
 type Result = Run<'(Or False False)'>; // false
-//   - increase
+//   - Increase by one
 type Result = Run<'(++ 2)'>; // '3'
 type Result = Run<'(++ 5)'>; // '6'
-//   - decrease
+//   - Decrease by one
 type Result = Run<'(-- 2)'>; // '1'
 type Result = Run<'(-- 5)'>; // '4'
 
@@ -85,7 +85,7 @@ type Result = Run<'(If (Eq "4" "4") "y" "n")'>; // 'y'
 type Result = Run<'(Join (Join "a" "b") "a")'>; // 'aba'
 type Result = Run<'(Or (Eq 1 1) False)'>; // true
 
-// Return last expression
+// Should return the last expression
 type Result = Run<'(++ 1) (++ 2)'>; // '3'
 type Result = Run<'(Eq 1 1) (Eq 2 3)'>; // false
 
