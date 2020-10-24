@@ -10,6 +10,7 @@ import {
 } from './parse';
 import type { Reverse, Tail, Unshift } from './arrayUtils';
 import { ConcatStrings, Cast } from './stringUtils';
+import { And, Dec, Equals, Inc, Or } from './builtInFunctions';
 
 type Eval<E extends Expression> = E extends NullExpression
   ? null
@@ -20,54 +21,21 @@ type Eval<E extends Expression> = E extends NullExpression
   : E extends StringExpression<infer V>
   ? V
   : E extends IfExpression<infer P, infer T, infer E>
-  ? EvalIf<P, T, E>
+  ? EvalIfExpression<P, T, E>
   : E extends CallExpression<infer N, infer P>
-  ? EvalCall<N, P>
+  ? EvalCallExpression<N, P>
   : never;
 
-type Equals<A, B> = A extends B ? (B extends A ? true : false) : false;
+type EvalIfExpression<
+  P extends Expression,
+  T extends Expression,
+  E extends Expression
+> = Eval<P> extends false ? Eval<E> : Eval<T>;
 
-type And<A, B> = A extends true ? (B extends true ? true : false) : false;
-
-type Or<A, B> = A extends true ? true : B extends true ? true : false;
-
-export type Inc<T extends number> = T extends keyof IncTable
-  ? IncTable[T]
-  : never;
-
-type IncTable = {
-  '0': '1';
-  '1': '2';
-  '2': '3';
-  '3': '4';
-  '4': '5';
-  '5': '6';
-  '6': '7';
-  '7': '8';
-  '8': '9';
-  '9': '10';
-};
-
-export type Dec<T extends number> = T extends keyof DecTable
-  ? DecTable[T]
-  : never;
-
-type DecTable = {
-  '10': '9';
-  '9': '8';
-  '8': '7';
-  '7': '6';
-  '6': '5';
-  '5': '4';
-  '4': '3';
-  '3': '2';
-  '2': '1';
-  '1': '0';
-};
-
-type EvalCall<N extends Expression, P extends Array<Expression>> = EvalSequence<
-  P
-> extends infer G
+type EvalCallExpression<
+  N extends Expression,
+  P extends Array<Expression>
+> = EvalSequence<P> extends infer G
   ? N extends VariableExpression<'Join'>
     ? ConcatStrings<Cast<G, Array<any>>[0], Cast<G, Array<any>>[1]>
     : N extends VariableExpression<'Eq'>
@@ -92,9 +60,3 @@ export type EvalAndReturnLast<
   E extends Array<any>,
   R extends any = null
 > = E extends [] ? R : EvalAndReturnLast<Tail<E>, Eval<E[0]>>;
-
-type EvalIf<
-  P extends Expression,
-  T extends Expression,
-  E extends Expression
-> = Eval<P> extends false ? Eval<E> : Eval<T>;
