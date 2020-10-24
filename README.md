@@ -4,7 +4,7 @@
 
 ### Introduction
 
-This is an exremely simplified language interpreter implemented purely in TypeScript type annotations. You pass your code as a string and get back the result by hovering with your mouse on the resulting type annotation.
+This is an extremely simplified language interpreter implemented purely in TypeScript type annotations. You pass your code as a string and get back the result by hovering with your mouse on the resulting type annotation.
 
 The syntax is Lisp-like. If you're not familiar with it, here's a quick comparison to JavaScript's syntax:
 
@@ -16,7 +16,7 @@ The syntax is Lisp-like. If you're not familiar with it, here's a quick comparis
  (add 3 (subtract 2 1))    add(3, subtract(2, 1))
 ```
 
-The language supports booleans, numbers, strings, conditionals (if statements), and calling the following buit-in functions:
+The language supports booleans, numbers, strings, conditionals (if statements), and calling the following built-in functions:
 
 - `++`: Increases a number by one.
 - `--`: Decreases a number by one.
@@ -27,7 +27,7 @@ The language supports booleans, numbers, strings, conditionals (if statements), 
 
 ### Try running the code ([See it live]())
 
-Install `typelang` with `npm install typelang` or `yarn install typelang` (requires TypeScript v4.1.0 or above).
+Install `typelang` with `npm install typelang` or with `yarn install typelang` (requires TypeScript v4.1.0 or above).
 
 See the following example live by [clicking here]():
 
@@ -48,9 +48,9 @@ type Result = Run<'True'>; // true
 type Result = Run<'False'>; // false
 
 // Conditionals
-type Result = Run<'(If True 1 0)'>; // '1'
-type Result = Run<'(If False 1 0)'>; // '0'
-type Result = Run<'(If 1 1 0)'>; // '1'
+type Result = Run<'(If True "yes" "no")'>; // 'yes'
+type Result = Run<'(If False "yes" "no")'>; // 'no'
+type Result = Run<'(If 1 "truthy" "nope")'>; // 'truthy'
 
 // Core functions:
 //   - Join (concat)
@@ -82,7 +82,7 @@ type Result = Run<'(Eq (Join "ab" "b") "aa")'>; // false
 type Result = Run<'(++ (++ (++ 4)))'>; // '7'
 type Result = Run<'(If (Eq "2" "3") "y" "n")'>; // 'n'
 type Result = Run<'(If (Eq "4" "4") "y" "n")'>; // 'y'
-type Result = Run<'(Join (Join "a" "b") "a")'>; // 'aba'
+type Result = Run<'(Join (Join "a" "b") "c")'>; // 'abc'
 type Result = Run<'(Or (Eq 1 1) False)'>; // true
 
 // Should return the last expression

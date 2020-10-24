@@ -15,9 +15,9 @@ expectType<Run<'True'>>(true);
 expectType<Run<'False'>>(false);
 
 // Conditionals
-expectType<Run<'(If True 1 0)'>>('1');
-expectType<Run<'(If False 1 0)'>>('0');
-expectType<Run<'(If 1 1 0)'>>('1');
+expectType<Run<'(If True "yes" "no")'>>('yes');
+expectType<Run<'(If False "yes" "no")'>>('no');
+expectType<Run<'(If 1 "truthy" "nope")'>>('truthy');
 
 // Core functions:
 //   - Join (concat)
@@ -49,7 +49,7 @@ expectType<Run<'(Eq (Join "ab" "b") "aa")'>>(false);
 expectType<Run<'(++ (++ (++ 4)))'>>('7');
 expectType<Run<'(If (Eq "2" "3") "y" "n")'>>('n');
 expectType<Run<'(If (Eq "4" "4") "y" "n")'>>('y');
-expectType<Run<'(Join (Join "a" "b") "a")'>>('aba');
+expectType<Run<'(Join (Join "a" "b") "c")'>>('abc');
 expectType<Run<'(Or (Eq 1 1) False)'>>(true);
 
 // Should return the last expression

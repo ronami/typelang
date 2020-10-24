@@ -1,8 +1,6 @@
-export type EatFirstChar<T> =  T extends `${infer _}${infer B}` ? B : '';
+export type EatFirstChar<T> =  T extends `${infer A}${infer B}` ? B : '';
 
-export type FirstChar<
-  I extends string
-> = I extends `${infer T}${EatFirstChar<I>}` ? T : ''
+export type FirstChar<T> = T extends `${infer A}${infer B}` ? A : '';
 
 export type ConcatStrings<A extends string, B extends string> = `${A}${B}`;
 
