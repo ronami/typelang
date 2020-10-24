@@ -64,7 +64,9 @@ type TokenizeString<
   A extends string = '',
   C extends string = FirstChar<I>,
   E extends string = EatFirstChar<I>
-> = C extends '"'
+> = I extends ''
+  ? never
+  : C extends '"'
   ? Tokenize<E, Unshift<R, { type: 'string'; value: A }>>
   : TokenizeString<E, R, ConcatStrings<A, C>>;
 
