@@ -1,19 +1,19 @@
 ## 🌳 TypeLang
 
-> A functional language implemented purely in TypeScript's type-system
+> A tiny language interpreter implemented purely in TypeScript's type-system
 
 ### Introduction
 
-This is an exremely simplified functional language interpreter implemented purely in TypeScript type annotations. You pass your code as a string and get back a result by hovering your mouse on the resulting type annotation.
+This is an exremely simplified language interpreter implemented purely in TypeScript type annotations. You pass your code as a string and get back the result by hovering with your mouse on the resulting type annotation.
 
 The syntax is Lisp-like. If you're not familiar with it, here's a quick comparison to JavaScript's syntax:
 
 ```
-   LISP                      JavaScript
+ LISP                      JavaScript
 
-   (add 1 2)                 add(1, 2)
-   (subtract 5 2)            subtract(5, 2)
-   (add 3 (subtract 2 1))    add(3, subtract(2, 1))
+ (add 1 2)                 add(1, 2)
+ (subtract 5 2)            subtract(5, 2)
+ (add 3 (subtract 2 1))    add(3, subtract(2, 1))
 ```
 
 The language supports booleans, numbers, strings, conditionals (if statements), and calling the following buit-in functions:
