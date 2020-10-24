@@ -8,7 +8,7 @@ import type {
   VariableExpression,
 } from './parse';
 import type { Reverse, Tail, Unshift } from './arrayUtils';
-import type { Cast } from './stringUtils';
+import type { Cast } from './generalUtils';
 
 export type Analyze<E extends Expression> = E extends NullExpression
   ? NullExpression

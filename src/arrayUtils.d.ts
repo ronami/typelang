@@ -12,11 +12,7 @@ export type Unshift<T extends Array<any>, E> = ((
   ? R
   : never;
 
-export type Head<T extends Array<any>> = T extends [any, ...Array<any>]
-  ? T['0']
-  : never;
-
 export type Reverse<T extends Array<any>, R extends Array<any> = []> = {
   finish: R;
-  next: Reverse<Tail<T>, Unshift<R, Head<T>>>;
+  next: Reverse<Tail<T>, Unshift<R, T[0]>>;
 }[T extends [] ? 'finish' : 'next'];

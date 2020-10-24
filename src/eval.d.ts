@@ -9,8 +9,9 @@ import type {
   VariableExpression,
 } from './parse';
 import type { Reverse, Tail, Unshift } from './arrayUtils';
-import type { ConcatStrings, Cast } from './stringUtils';
+import type { ConcatStrings } from './stringUtils';
 import type { And, Dec, Equals, Inc, Or } from './builtInFunctions';
+import type { Cast } from './generalUtils';
 
 type Eval<E extends Expression> = E extends NullExpression
   ? null

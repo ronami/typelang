@@ -2,7 +2,7 @@ import type { Tokenize } from './tokenize';
 import type { ParseSequence } from './parse';
 import type { AnalyzeSequence } from './analyze';
 import type { EvalAndReturnLast } from './eval';
-import type { Cast } from './stringUtils';
+import type { Cast } from './generalUtils';
 
 type Tokens = Tokenize<'(If 1 "yes" "no")'>;
 type Parsed = ParseSequence<Tokens>;

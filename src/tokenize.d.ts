@@ -1,6 +1,6 @@
 import type { Reverse, Unshift } from './arrayUtils';
 import type { EatFirstChar, FirstChar, ConcatStrings } from './stringUtils';
-import type { isNumberCharacter, isSymbolCharacter } from './numberUtils';
+import type { isNumberCharacter, isSymbolCharacter } from './generalUtils';
 
 export type ParenToken<V> = { type: 'paren'; value: V };
 export type NumberToken<V> = { type: 'number'; value: V };
