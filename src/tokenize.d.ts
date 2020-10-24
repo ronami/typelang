@@ -1,6 +1,6 @@
 import type { Reverse, Unshift } from './arrayUtils';
 import type { EatFirstChar, FirstChar, ConcatStrings } from './stringUtils';
-import type { isNumberCharacter, isSymbolCharacter } from './generalUtils';
+import type { Numbers, Symbols } from './generalUtils';
 
 export type ParenToken<V> = { type: 'paren'; value: V };
 export type NumberToken<V> = { type: 'number'; value: V };
@@ -41,11 +41,11 @@ export type Tokenize<
         }
       >
     >
-  : isNumberCharacter<FirstChar<I>> extends true
+  : FirstChar<I> extends Numbers
   ? TokenizeNumber<I, R, '', FirstChar<I>>
   : FirstChar<I> extends '"'
   ? TokenizeString<EatFirstChar<I>, R>
-  : isSymbolCharacter<FirstChar<I>> extends true
+  : FirstChar<I> extends Symbols
   ? TokenizeSymbol<I, R, '', FirstChar<I>>
   : [];
 
@@ -54,7 +54,7 @@ type TokenizeNumber<
   R extends Array<Token<any>>,
   A extends string = '',
   C extends string = FirstChar<I>
-> = isNumberCharacter<C> extends true
+> = C extends Numbers
   ? TokenizeNumber<EatFirstChar<I>, R, ConcatStrings<A, C>>
   : Tokenize<I, Unshift<R, { type: 'number'; value: A }>>;
 
@@ -73,6 +73,6 @@ type TokenizeSymbol<
   R extends Array<Token<any>>,
   A extends string = '',
   C extends string = FirstChar<I>
-> = isSymbolCharacter<C> extends true
+> = C extends Symbols
   ? TokenizeSymbol<EatFirstChar<I>, R, ConcatStrings<A, C>>
   : Tokenize<I, Unshift<R, { type: 'symbol'; value: A }>>;
