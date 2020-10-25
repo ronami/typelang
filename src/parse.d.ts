@@ -39,8 +39,8 @@ export type IfExpression<
 > = {
   type: 'If';
   predicate: P;
-  thenClause: T;
-  elseClause: E;
+  then: T;
+  else: E;
 };
 
 export type DefinitionExpression<I extends Expression, V extends Expression> = {
@@ -96,8 +96,8 @@ type ParseCallExpression<T extends Array<Token<any>>> = ParseArgs<
           ? {
               type: 'If';
               predicate: Cast<H, Array<any>>[1];
-              thenClause: Cast<H, Array<any>>[2];
-              elseClause: Cast<H, Array<any>>[3];
+              then: Cast<H, Array<any>>[2];
+              else: Cast<H, Array<any>>[3];
             }
           : Cast<H, Array<any>>[0] extends VariableExpression<'Def'>
           ? {
