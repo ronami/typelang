@@ -68,7 +68,7 @@ export type Expression =
   | DefinitionExpression<any, any>
   | CallExpression<any, Array<any>>;
 
-export type Parse<
+export type ParseInput<
   T extends Array<Token<any>>,
   F extends Token<any> = T[0]
 > = F extends ParenToken<'('>
@@ -123,12 +123,14 @@ type ParseArgs<
   ? [Reverse<R>, Tail<T>]
   : T extends []
   ? never
-  : Parse<T> extends infer G
+  : ParseInput<T> extends infer G
   ? ParseArgs<Cast<G, Array<any>>[1], Unshift<R, Cast<G, Array<any>>[0]>>
   : never;
 
 export type ParseSequence<
   T extends Array<Token<any>>,
   R extends Array<Expression> = [],
-  P extends [Expression, Array<Token<any>>] = Parse<T>
-> = T extends [] ? Reverse<R> : ParseSequence<P[1], Unshift<R, P[0]>>;
+  P extends [Expression, Array<Token<any>>] = ParseInput<T>
+> = T extends [] ? R : ParseSequence<P[1], Unshift<R, P[0]>>;
+
+export type Parse<T extends Array<Token<any>>> = Reverse<ParseSequence<T>>;

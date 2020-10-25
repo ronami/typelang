@@ -65,5 +65,7 @@ export type TokenizeSequence<
   R extends Array<Token<any>> = [],
   P extends [any, string] = TokenizeInput<I>
 > = I extends ''
-  ? Reverse<R>
+  ? R
   : TokenizeSequence<P[1], P[0] extends '' ? R : Unshift<R, P[0]>>;
+
+export type Tokenize<I extends string> = Reverse<TokenizeSequence<I>>;
