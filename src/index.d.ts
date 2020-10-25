@@ -1,18 +1,14 @@
 import type { Tokenize } from './tokenize';
 import type { ParseSequence } from './parse';
-import type { AnalyzeSequence } from './analyze';
 import type { EvalAndReturnLast } from './eval';
 import type { Cast } from './generalUtils';
 
-type Tokens = Tokenize<'"hello"'>;
+type Tokens = Tokenize<'(If True "yes" "no")'>;
 type Parsed = ParseSequence<Tokens>;
-type Analyzed = AnalyzeSequence<Parsed>;
-type Result = EvalAndReturnLast<Analyzed>;
+type Result = EvalAndReturnLast<Parsed>;
 
 export type Run<I extends string> = Tokenize<I> extends infer T
   ? ParseSequence<Cast<T, Array<any>>> extends infer P
-    ? AnalyzeSequence<Cast<P, Array<any>>> extends infer A
-      ? EvalAndReturnLast<Cast<A, Array<any>>>
-      : never
+    ? EvalAndReturnLast<Cast<P, Array<any>>>
     : never
   : never;
