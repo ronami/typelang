@@ -1,3 +1,6 @@
+import type { Tail } from './arrayUtils';
+import type { ConcatStrings } from './stringUtils';
+
 // Equals
 export type Equals<A, B> = A extends B ? (B extends A ? true : false) : false;
 
@@ -15,6 +18,11 @@ export type Or<A, B> = A extends true ? true : B extends true ? true : false;
 export type Inc<T extends number> = T extends keyof IncTable
   ? IncTable[T]
   : never;
+
+// Concatenate an array of strings
+export type Join<T extends Array<string>, R extends string = ''> = T extends []
+  ? R
+  : Join<Tail<T>, ConcatStrings<R, T[0]>>;
 
 type IncTable = {
   '0': '1';

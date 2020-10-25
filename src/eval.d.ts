@@ -11,7 +11,7 @@ import type {
 } from './parse';
 import type { Reverse, Tail, Unshift } from './arrayUtils';
 import type { ConcatStrings } from './stringUtils';
-import type { And, Dec, Equals, Inc, Or } from './builtInFunctions';
+import type { And, Dec, Equals, Inc, Join, Or } from './builtInFunctions';
 import type { Cast } from './generalUtils';
 
 type State = Record<string, any>;
@@ -71,10 +71,7 @@ type EvalCallExpression<
 > = Eval<S, C> extends infer H
   ? EvalSequence<Cast<H, Array<any>>[0], A> extends infer G
     ? C extends VariableExpression<'Join'>
-      ? [
-          Cast<G, Array<any>>[0],
-          ConcatStrings<Cast<G, Array<any>>[1][0], Cast<G, Array<any>>[1][1]>,
-        ]
+      ? [Cast<G, Array<any>>[0], Join<Cast<G, Array<any>>[1]>]
       : C extends VariableExpression<'Eq'>
       ? [
           Cast<G, Array<any>>[0],

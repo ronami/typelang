@@ -4,10 +4,7 @@ import type { EvalAndReturnLast } from './eval';
 import type { Cast } from './generalUtils';
 
 type Tokens = TokenizeSequence<
-  // Define variable `x` with "Hello"
-  // If `true`, join its value with "World" and return the result
-  // Otherwise, return "Bye"
-  '(Def x "Hello") (If True (Join x " World!") "Bye!")'
+  '(Def x "Hello") (Def y "World") (Join x " " y)'
 >;
 type Parsed = ParseSequence<Tokens>;
 type Result = EvalAndReturnLast<{}, Parsed>;

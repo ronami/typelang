@@ -12,7 +12,7 @@ export type Token<V> =
   | StringToken<V>
   | SymbolToken<V>;
 
-type TokenizeInput<I extends string> = FirstChar<I> extends ' '
+type TokenizeInput<I extends string> = FirstChar<I> extends ' ' | '\n'
   ? ['', EatFirstChar<I>]
   : FirstChar<I> extends '('
   ? [
