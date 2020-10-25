@@ -3,7 +3,7 @@ import type { ParseSequence } from './parse';
 import type { EvalAndReturnLast } from './eval';
 import type { Cast } from './generalUtils';
 
-type Tokens = Tokenize<'(Def x 1) x'>;
+type Tokens = Tokenize<'(If True (Join "a" "b") "no")'>;
 type Parsed = ParseSequence<Tokens>;
 type Result = EvalAndReturnLast<{}, Parsed>;
 

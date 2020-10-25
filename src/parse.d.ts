@@ -50,11 +50,11 @@ export type DefinitionExpression<I extends Expression, V extends Expression> = {
 };
 
 export type CallExpression<
-  N extends Expression,
+  C extends Expression,
   A extends Array<Expression>
 > = {
   type: 'Call';
-  callee: N;
+  callee: C;
   arguments: A;
 };
 

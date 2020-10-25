@@ -30,8 +30,8 @@ type Eval<S extends State, E extends Expression> = E extends NullExpression
   ? EvalVariableExpression<S, V>
   : E extends DefinitionExpression<infer I, infer V>
   ? EvalDefinitionExpression<S, I, V>
-  : E extends CallExpression<infer N, infer A>
-  ? EvalCallExpression<S, N, A>
+  : E extends CallExpression<infer C, infer A>
+  ? EvalCallExpression<S, C, A>
   : never;
 
 type EvalVariableExpression<S extends State, V extends string> = [
@@ -66,33 +66,33 @@ type EvalIfExpression<
 
 type EvalCallExpression<
   S extends State,
-  N extends Expression,
-  P extends Array<Expression>
-> = Eval<S, N> extends infer H
-  ? EvalSequence<Cast<H, Array<any>>[0], P> extends infer G
-    ? N extends VariableExpression<'Join'>
+  C extends Expression,
+  A extends Array<Expression>
+> = Eval<S, C> extends infer H
+  ? EvalSequence<Cast<H, Array<any>>[0], A> extends infer G
+    ? C extends VariableExpression<'Join'>
       ? [
           Cast<G, Array<any>>[0],
           ConcatStrings<Cast<G, Array<any>>[1][0], Cast<G, Array<any>>[1][1]>,
         ]
-      : N extends VariableExpression<'Eq'>
+      : C extends VariableExpression<'Eq'>
       ? [
           Cast<G, Array<any>>[0],
           Equals<Cast<G, Array<any>>[1][0], Cast<G, Array<any>>[1][1]>,
         ]
-      : N extends VariableExpression<'And'>
+      : C extends VariableExpression<'And'>
       ? [
           Cast<G, Array<any>>[0],
           And<Cast<G, Array<any>>[1][0], Cast<G, Array<any>>[1][1]>,
         ]
-      : N extends VariableExpression<'Or'>
+      : C extends VariableExpression<'Or'>
       ? [
           Cast<G, Array<any>>[0],
           Or<Cast<G, Array<any>>[1][0], Cast<G, Array<any>>[1][1]>,
         ]
-      : N extends VariableExpression<'++'>
+      : C extends VariableExpression<'++'>
       ? [Cast<G, Array<any>>[1][0], Inc<Cast<G, Array<any>>[1][0]>]
-      : N extends VariableExpression<'--'>
+      : C extends VariableExpression<'--'>
       ? [Cast<G, Array<any>>[1][0], Dec<Cast<G, Array<any>>[1][0]>]
       : never
     : never
