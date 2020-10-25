@@ -84,24 +84,21 @@ type ParseCallExpression<T extends Array<Token<any>>> = ParseArgs<
   T
 > extends infer G
   ? Cast<G, Array<any>>[0] extends infer H
-    ? Cast<H, Array<any>>[0] extends VariableExpression<'If'>
-      ? [
-          {
-            type: 'If';
-            predicate: Cast<H, Array<any>>[1];
-            thenClause: Cast<H, Array<any>>[2];
-            elseClause: Cast<H, Array<any>>[3];
-          },
-          Cast<G, Array<any>>[1],
-        ]
-      : [
-          {
-            type: 'Call';
-            callee: Cast<H, Array<any>>[0];
-            arguments: Tail<Cast<H, Array<any>>>;
-          },
-          Cast<G, Array<any>>[1],
-        ]
+    ? [
+        Cast<H, Array<any>>[0] extends VariableExpression<'If'>
+          ? {
+              type: 'If';
+              predicate: Cast<H, Array<any>>[1];
+              thenClause: Cast<H, Array<any>>[2];
+              elseClause: Cast<H, Array<any>>[3];
+            }
+          : {
+              type: 'Call';
+              callee: Cast<H, Array<any>>[0];
+              arguments: Tail<Cast<H, Array<any>>>;
+            },
+        Cast<G, Array<any>>[1],
+      ]
     : never
   : never;
 
