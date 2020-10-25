@@ -68,6 +68,5 @@ expectType<Run<'(Eq 1 1) (Eq 2 3)'>>(false);
 
 // Invalid syntax
 expectType<Run<'(++ (++ '>>(this as never);
-expectType<Run<'hello'>>(this as never);
-expectType<Run<'=++'>>(this as never);
 expectType<Run<') ++'>>(this as never);
+expectType<Run<'"aa'>>(this as never);
