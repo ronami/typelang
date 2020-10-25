@@ -74,6 +74,13 @@ type Result = Run<'(++ 5)'>; // '6'
 type Result = Run<'(-- 2)'>; // '1'
 type Result = Run<'(-- 5)'>; // '4'
 
+// Variables scripts
+type Result = Run<'(Def x 1) x'>; // '1'
+type Result = Run<'(Def x 1) y'>; // null
+type Result = Run<'(Def x 2) (++ x)'>; // '3'
+type Result = Run<'(++ x) (Def x 2)'>; // '2'
+type Result = Run<'(Def x "hello") (Join x "world")'>; // 'helloworld'
+
 // Composite scripts
 type Result = Run<'(Eq (++ 1) 1)'>; // false
 type Result = Run<'(Eq (++ (++ 1)) 3)'>; // true

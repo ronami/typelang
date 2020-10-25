@@ -41,6 +41,13 @@ expectType<Run<'(++ 5)'>>('6');
 expectType<Run<'(-- 2)'>>('1');
 expectType<Run<'(-- 5)'>>('4');
 
+// Variables scripts
+expectType<Run<'(Def x 1) x'>>('1');
+expectType<Run<'(Def x 1) y'>>(null);
+expectType<Run<'(Def x 2) (++ x)'>>('3');
+expectType<Run<'(++ x) (Def x 2)'>>('2');
+expectType<Run<'(Def x "hello") (Join x "world")'>>('helloworld');
+
 // Composite scripts
 expectType<Run<'(Eq (++ 1) 1)'>>(false);
 expectType<Run<'(Eq (++ (++ 1)) 3)'>>(true);

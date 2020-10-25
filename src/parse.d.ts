@@ -27,7 +27,7 @@ export type StringExpression<V> = {
   value: V;
 };
 
-export type VariableExpression<V> = {
+export type VariableExpression<V extends string> = {
   type: 'Variable';
   value: V;
 };
@@ -43,13 +43,19 @@ export type IfExpression<
   elseClause: E;
 };
 
+export type DefinitionExpression<I extends Expression, V extends Expression> = {
+  type: 'Definition';
+  identifier: I;
+  value: V;
+};
+
 export type CallExpression<
   N extends Expression,
-  P extends Array<Expression>
+  A extends Array<Expression>
 > = {
   type: 'Call';
   callee: N;
-  arguments: P;
+  arguments: A;
 };
 
 export type Expression =
@@ -59,6 +65,7 @@ export type Expression =
   | StringExpression<any>
   | VariableExpression<any>
   | IfExpression<any, any, any>
+  | DefinitionExpression<any, any>
   | CallExpression<any, Array<any>>;
 
 export type Parse<
@@ -91,6 +98,12 @@ type ParseCallExpression<T extends Array<Token<any>>> = ParseArgs<
               predicate: Cast<H, Array<any>>[1];
               thenClause: Cast<H, Array<any>>[2];
               elseClause: Cast<H, Array<any>>[3];
+            }
+          : Cast<H, Array<any>>[0] extends VariableExpression<'Def'>
+          ? {
+              type: 'Definition';
+              identifier: Cast<H, Array<any>>[1];
+              value: Cast<H, Array<any>>[2];
             }
           : {
               type: 'Call';
