@@ -10,7 +10,6 @@ import type {
   VariableExpression,
 } from './parse';
 import type { Reverse, Tail, Unshift } from './arrayUtils';
-import type { ConcatStrings } from './stringUtils';
 import type { And, Dec, Equals, Inc, Join, Or } from './builtInFunctions';
 import type { Cast } from './generalUtils';
 
