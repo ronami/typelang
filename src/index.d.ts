@@ -7,7 +7,7 @@ type Tokens = TokenizeSequence<
   // Define variable `x` with "Hello"
   // If `true`, join its value with "World" and return the result
   // Otherwise, return "Bye"
-  '(Def x "Hello ") (If True (Join x "World!") "Bye!")'
+  '(Def x "Hello") (If True (Join x " World!") "Bye!")'
 >;
 type Parsed = ParseSequence<Tokens>;
 type Result = EvalAndReturnLast<{}, Parsed>;
