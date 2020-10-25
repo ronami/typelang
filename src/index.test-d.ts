@@ -58,6 +58,9 @@ expectType<Run<'(If (Eq "2" "3") "y" "n")'>>('n');
 expectType<Run<'(If (Eq "4" "4") "y" "n")'>>('y');
 expectType<Run<'(Join (Join "a" "b") "c")'>>('abc');
 expectType<Run<'(Or (Eq 1 1) False)'>>(true);
+expectType<Run<'(Def x "Hello") (If True (Join x " World!") "Bye!")'>>(
+  'Hello World!',
+);
 
 // Should return the last expression
 expectType<Run<'(++ 1) (++ 2)'>>('3');
