@@ -4,7 +4,7 @@ import type { AnalyzeSequence } from './analyze';
 import type { EvalAndReturnLast } from './eval';
 import type { Cast } from './generalUtils';
 
-type Tokens = Tokenize<'(If 1 "yes" "no")'>;
+type Tokens = Tokenize<'"hello"'>;
 type Parsed = ParseSequence<Tokens>;
 type Analyzed = AnalyzeSequence<Parsed>;
 type Result = EvalAndReturnLast<Analyzed>;

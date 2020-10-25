@@ -61,14 +61,9 @@ type TokenizeNumber<
 type TokenizeString<
   I extends string,
   R extends Array<Token<any>>,
-  A extends string = '',
-  C extends string = FirstChar<I>,
-  E extends string = EatFirstChar<I>
-> = C extends '"'
-  ? Tokenize<E, Unshift<R, { type: 'string'; value: A }>>
-  : I extends ''
-  ? never
-  : TokenizeString<E, R, ConcatStrings<A, C>>;
+> = I extends `${infer H}"${infer G}`
+  ? Tokenize<G, Unshift<R, { type: 'string'; value: H }>>
+  : never
 
 type TokenizeSymbol<
   I extends string,
