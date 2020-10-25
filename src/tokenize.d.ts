@@ -12,66 +12,58 @@ export type Token<V> =
   | StringToken<V>
   | SymbolToken<V>;
 
-export type Tokenize<I extends string> = Reverse<TokenizeInput<I>>;
-
-export type TokenizeInput<
-  I extends string,
-  R extends Array<Token<any>> = []
-> = I extends ''
-  ? R
-  : FirstChar<I> extends ' ' | '\n'
-  ? TokenizeInput<EatFirstChar<I>, R>
+type TokenizeInput<I extends string> = FirstChar<I> extends ' '
+  ? ['', EatFirstChar<I>]
   : FirstChar<I> extends '('
-  ? TokenizeInput<
+  ? [
+      {
+        type: 'paren';
+        value: '(';
+      },
       EatFirstChar<I>,
-      Unshift<
-        R,
-        {
-          type: 'paren';
-          value: '(';
-        }
-      >
-    >
+    ]
   : FirstChar<I> extends ')'
-  ? TokenizeInput<
+  ? [
+      {
+        type: 'paren';
+        value: ')';
+      },
       EatFirstChar<I>,
-      Unshift<
-        R,
-        {
-          type: 'paren';
-          value: ')';
-        }
-      >
-    >
+    ]
   : FirstChar<I> extends Numbers
-  ? TokenizeNumber<I, R, '', FirstChar<I>>
+  ? TokenizeNumber<I, '', FirstChar<I>>
   : FirstChar<I> extends '"'
-  ? TokenizeString<EatFirstChar<I>, R>
+  ? TokenizeString<EatFirstChar<I>>
   : FirstChar<I> extends Symbols
-  ? TokenizeSymbol<I, R, '', FirstChar<I>>
-  : [];
+  ? TokenizeSymbol<I, '', FirstChar<I>>
+  : never;
 
 type TokenizeNumber<
   I extends string,
-  R extends Array<Token<any>>,
   A extends string = '',
   C extends string = FirstChar<I>
 > = C extends Numbers
-  ? TokenizeNumber<EatFirstChar<I>, R, ConcatStrings<A, C>>
-  : TokenizeInput<I, Unshift<R, { type: 'number'; value: A }>>;
+  ? TokenizeNumber<EatFirstChar<I>, ConcatStrings<A, C>>
+  : [{ type: 'number'; value: A }, I];
 
 type TokenizeString<
   I extends string,
-  R extends Array<Token<any>>,
 > = I extends `${infer H}"${infer G}`
-  ? TokenizeInput<G, Unshift<R, { type: 'string'; value: H }>>
+  ? [{ type: 'string'; value: H }, G]
   : never
 
 type TokenizeSymbol<
   I extends string,
-  R extends Array<Token<any>>,
   A extends string = '',
   C extends string = FirstChar<I>
 > = C extends Symbols
-  ? TokenizeSymbol<EatFirstChar<I>, R, ConcatStrings<A, C>>
-  : TokenizeInput<I, Unshift<R, { type: 'symbol'; value: A }>>;
+  ? TokenizeSymbol<EatFirstChar<I>, ConcatStrings<A, C>>
+  : [{ type: 'symbol'; value: A }, I];
+
+export type TokenizeSequence<
+  I extends string,
+  R extends Array<Token<any>> = [],
+  P extends [any, string] = TokenizeInput<I>
+> = I extends ''
+  ? Reverse<R>
+  : TokenizeSequence<P[1], P[0] extends '' ? R : Unshift<R, P[0]>>;
