@@ -21,46 +21,44 @@ expectType<Run<'(If 1 "truthy" "nope")'>>('truthy');
 
 // Core functions:
 //   - Join (concat)
-expectType<Run<'(Join "a" "b")'>>('ab');
 expectType<Run<'(Join "hello" "world")'>>('helloworld');
+expectType<Run<'(Join "a" "b" "c" "d")'>>('abcd');
 //   - Equals
-expectType<Run<'(Eq 1 2)'>>(false);
 expectType<Run<'(Eq 2 2)'>>(true);
+expectType<Run<'(Eq "you" "me")'>>(false);
 //   - Logical and
 expectType<Run<'(And True True)'>>(true);
-expectType<Run<'(And True False)'>>(false);
 expectType<Run<'(And False False)'>>(false);
 //   - Logical or
-expectType<Run<'(Or True True)'>>(true);
 expectType<Run<'(Or True False)'>>(true);
 expectType<Run<'(Or False False)'>>(false);
 //   - Increase by one
 expectType<Run<'(++ 2)'>>('3');
-expectType<Run<'(++ 5)'>>('6');
 //   - Decrease by one
-expectType<Run<'(-- 2)'>>('1');
 expectType<Run<'(-- 5)'>>('4');
 
-// Variables scripts
+// Variables
 expectType<Run<'(Def x 1) x'>>('1');
-expectType<Run<'(Def x 1) y'>>(null);
+expectType<Run<'undefined_variable'>>(null);
 expectType<Run<'(Def x 2) (++ x)'>>('3');
 expectType<Run<'(++ x) (Def x 2)'>>('2');
-expectType<Run<'(Def x "hello") (Join x "world")'>>('helloworld');
+expectType<Run<'(Def x (++ 3)) (Def y (++ x)) (Join "result: " y)'>>(
+  'result: 5',
+);
+expectType<Run<'(Def a "hello") (Def b "world") (Join a " " b)'>>(
+  'hello world',
+);
 
 // Composite scripts
 expectType<Run<'(Eq (++ 1) 1)'>>(false);
-expectType<Run<'(Eq (++ (++ 1)) 3)'>>(true);
-expectType<Run<'(Eq (Join "a" "b") "ab")'>>(true);
-expectType<Run<'(Eq (Join "ab" "b") "aa")'>>(false);
-expectType<Run<'(++ (++ (++ 4)))'>>('7');
-expectType<Run<'(If (Eq "2" "3") "y" "n")'>>('n');
-expectType<Run<'(If (Eq "4" "4") "y" "n")'>>('y');
-expectType<Run<'(Join (Join "a" "b") "c")'>>('abc');
-expectType<Run<'(Or (Eq 1 1) False)'>>(true);
-expectType<Run<'(Def x "Hello") (If True (Join x " World!") "Bye!")'>>(
+expectType<Run<'(Join (Join "foo" " " "bar") " " "baz")'>>('foo bar baz');
+expectType<Run<'(Def n 4) (++ (++ (++ n)))'>>('7');
+expectType<Run<'(If (Eq "2" "3") "equals!" "not!")'>>('not!');
+expectType<Run<'(Or (Eq 3 1) (Eq 1 1))'>>(true);
+expectType<Run<'(Def x "Hello") (If True (Join x " " "World!") "Bye!")'>>(
   'Hello World!',
 );
+expectType<Run<'(Def a 3) (Def b (++ a)) (++ b)'>>('5');
 
 // Should return the last expression
 expectType<Run<'(++ 1) (++ 2)'>>('3');

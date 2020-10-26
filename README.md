@@ -54,54 +54,48 @@ type Result = Run<'(If 1 "truthy" "nope")'>; // 'truthy'
 
 // Core functions:
 //   - Join (concat)
-type Result = Run<'(Join "a" "b")'>; // 'ab'
 type Result = Run<'(Join "hello" "world")'>; // 'helloworld'
+type Result = Run<'(Join "a" "b" "c" "d")'>; // 'abcd'
 //   - Equals
-type Result = Run<'(Eq 1 2)'>; // false
 type Result = Run<'(Eq 2 2)'>; // true
+type Result = Run<'(Eq "you" "me")'>; // false
 //   - Logical and
 type Result = Run<'(And True True)'>; // true
-type Result = Run<'(And True False)'>; // false
 type Result = Run<'(And False False)'>; // false
 //   - Logical or
-type Result = Run<'(Or True True)'>; // true
 type Result = Run<'(Or True False)'>; // true
 type Result = Run<'(Or False False)'>; // false
 //   - Increase by one
-type Result = Run<'(++ 2)'>; // '3'
-type Result = Run<'(++ 5)'>; // '6'
+type Result = Run<'(++ 2)'>; // 3
 //   - Decrease by one
-type Result = Run<'(-- 2)'>; // '1'
-type Result = Run<'(-- 5)'>; // '4'
+type Result = Run<'(-- 5)'>; // 4
 
-// Variables scripts
-type Result = Run<'(Def x 1) x'>; // '1'
-type Result = Run<'(Def x 1) y'>; // null
-type Result = Run<'(Def x 2) (++ x)'>; // '3'
-type Result = Run<'(++ x) (Def x 2)'>; // '2'
-type Result = Run<'(Def x "hello") (Join x "world")'>; // 'helloworld'
+// Variables
+type Result = Run<'(Def x 1) x'>; // 1
+type Result = Run<'undefined_variable'>; // null
+type Result = Run<'(Def x 2) (++ x)'>; // 3
+type Result = Run<'(++ x) (Def x 2)'>; // 2
+type Result = Run<'(Def x (++ 3)) (Def y (++ x)) (Join "result: " y)'>; // 'result: 5'
+type Result = Run<'(Def a "hello") (Def b "world") (Join a " " b)'>; // 'hello world'
 
 // Composite scripts
 type Result = Run<'(Eq (++ 1) 1)'>; // false
-type Result = Run<'(Eq (++ (++ 1)) 3)'>; // true
-type Result = Run<'(Eq (Join "a" "b") "ab")'>; // true
-type Result = Run<'(Eq (Join "ab" "b") "aa")'>; // false
-type Result = Run<'(++ (++ (++ 4)))'>; // '7'
-type Result = Run<'(If (Eq "2" "3") "y" "n")'>; // 'n'
-type Result = Run<'(If (Eq "4" "4") "y" "n")'>; // 'y'
-type Result = Run<'(Join (Join "a" "b") "c")'>; // 'abc'
-type Result = Run<'(Or (Eq 1 1) False)'>; // true
-type Result = Run<'(Def x "Hello") (If True (Join x " World!") "Bye!")'>; // 'Hello World!'
+type Result = Run<'(Join (Join "foo" " " "bar") " " "baz")'>; // 'foo bar baz'
+type Result = Run<'(Def n 4) (++ (++ (++ n)))'>; // 7
+type Result = Run<'(If (Eq "2" "3") "equals!" "not!")'>; // 'not!'
+type Result = Run<'(Or (Eq 3 1) (Eq 1 1))'>; // true
+type Result = Run<'(Def x "Hello") (If True (Join x " " "World!") "Bye!")'>; // 'Hello World!'
+
+type Result = Run<'(Def a 3) (Def b (++ a)) (++ b)'>; // 5
 
 // Should return the last expression
-type Result = Run<'(++ 1) (++ 2)'>; // '3'
+type Result = Run<'(++ 1) (++ 2)'>; // 3
 type Result = Run<'(Eq 1 1) (Eq 2 3)'>; // false
 
 // Invalid syntax
 type Result = Run<'(++ (++ '>; // never
-type Result = Run<'hello'>; // never
-type Result = Run<'=++'>; // never
 type Result = Run<') ++'>; // never
+type Result = Run<'"aa'>; // never
 ```
 
 **Note**: TypeScript has a limitation on how deep its computation can get. Because of this, we're limited to small inputs. If you're getting the following error: `Type instantiation is excessively deep and possibly infinite`, please try using a smaller input.
