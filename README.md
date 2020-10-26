@@ -85,7 +85,6 @@ type Result = Run<'(Def n 4) (++ (++ (++ n)))'>; // 7
 type Result = Run<'(If (Eq "2" "3") "equals!" "not!")'>; // 'not!'
 type Result = Run<'(Or (Eq 3 1) (Eq 1 1))'>; // true
 type Result = Run<'(Def x "Hello") (If True (Join x " " "World!") "Bye!")'>; // 'Hello World!'
-
 type Result = Run<'(Def a 3) (Def b (++ a)) (++ b)'>; // 5
 
 // Should return the last expression
