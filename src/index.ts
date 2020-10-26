@@ -3,11 +3,7 @@ import type { Parse } from './parse';
 import type { EvalAndReturnLast } from './eval';
 import type { Cast } from './generalUtils';
 
-type Code = `
-  (Def x "Hello")
-  (Def y "World")
-  (Join x " " y)
-`;
+type Code = '(Def n 3) (Def g (++ 4)) (Join "Result: " g)';
 type Tokens = Tokenize<Code>;
 type Parsed = Parse<Tokens>;
 type Result = EvalAndReturnLast<{}, Parsed>;

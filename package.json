@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "author": "Ronen Amiel",
-  "types": "./src/index.d.ts",
+  "types": "./build/index.d.ts",
   "scripts": {
     "test": "tsd",
     "watch": "tsc -p tsconfig.json -w",
