@@ -87,9 +87,9 @@ type EvalCallExpression<
           Or<Cast<G, Array<any>>[1][0], Cast<G, Array<any>>[1][1]>,
         ]
       : C extends VariableExpression<'++'>
-      ? [Cast<G, Array<any>>[1][0], Inc<Cast<G, Array<any>>[1][0]>]
+      ? [Cast<G, Array<any>>[0], Inc<Cast<G, Array<any>>[1][0]>]
       : C extends VariableExpression<'--'>
-      ? [Cast<G, Array<any>>[1][0], Dec<Cast<G, Array<any>>[1][0]>]
+      ? [Cast<G, Array<any>>[0], Dec<Cast<G, Array<any>>[1][0]>]
       : never
     : never
   : never;
