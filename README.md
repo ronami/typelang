@@ -65,10 +65,17 @@ type Result = Eval<'(-- 5)'>; // '4'
 type Result = Eval<'(Def x 1) x'>; // '1'
 type Result = Eval<'undefined_variable'>; // null
 type Result = Eval<'(Def x 2) (++ x)'>; // '3'
-type Result = Eval<'(Def x (++ 3)) (Def y (++ x)) (Join "result: " y)'>; // 'result: 5'
+type Result = Eval<`
+  (Def x (++ 3))
+  (Def y (++ x))
+  (Join "result: " y)
+`>; // 'result: 5'
 
 // Function declarations
-type Result = Eval<'(Fun SayHello (f n) (Join "Hello " f " " n)) (SayHello "John" "Doe")'>; // 'Hello John Doe'
+type Result = Eval<`
+  (Fun SayHello (f n) (Join "Hello " f " " n))
+  (SayHello "John" "Doe")
+`>; // 'Hello John Doe'
 
 // More examples scripts
 type Result = Eval<'(Eq (++ 1) 1)'>; // false
@@ -76,8 +83,15 @@ type Result = Eval<'(Join (Join "foo" " " "bar") " " "baz")'>; // 'foo bar baz'
 type Result = Eval<'(Def n 4) (++ (++ (++ n)))'>; // '7'
 type Result = Eval<'(If (Eq "2" "3") "equals!" "not!")'>; // 'not!'
 type Result = Eval<'(Or (Eq 3 1) (Eq 1 1))'>; // true
-type Result = Eval<'(Def x "Hello") (If True (Join x " " "World!") "Bye!")'>; // 'Hello World!'
-type Result = Eval<'(Def a 3) (Def b (++ a)) (++ b)'>; // '5'
+type Result = Eval<`
+  (Def x "Hello")
+  (If True (Join x " " "World!") "Bye!")
+`>; // 'Hello World!'
+type Result = Eval<`
+  (Def a 3)
+  (Def b (++ a))
+  (++ b)
+`>; // '5'
 
 // The last expression is returned
 type Result = Eval<'(++ 1) (++ 2)'>; // '3'
