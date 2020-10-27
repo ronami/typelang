@@ -63,6 +63,17 @@ export type CallExpression<
   arguments: A;
 };
 
+export type FunctionExpression<
+  I extends Expression,
+  A extends Array<Expression>,
+  B extends Expression
+> = {
+  type: 'Function';
+  identifier: I;
+  arguments: A;
+  body: B;
+};
+
 export type Expression =
   | BooleanExpression<any>
   | NullExpression
@@ -72,7 +83,8 @@ export type Expression =
   | IfExpression<any, any, any>
   | DefinitionExpression<any, any>
   | ListExpression<any>
-  | CallExpression<any, Array<any>>;
+  | CallExpression<any, Array<any>>
+  | FunctionExpression<any, any, any>;
 
 export type ParseInput<
   T extends Array<Token<any>>,

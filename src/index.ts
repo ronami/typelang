@@ -4,8 +4,10 @@ import type { EvalAndReturnLast } from './eval';
 import type { Cast } from './generalUtils';
 import type { AnalyzeSequence } from './analyze';
 
-type Code = '(If 1 2 3) (If 1 2 3) (If 1 2 3) (If 1 2 3)';
-// type Code = '(Eq (++ 1) 1)';
+type Code = `
+  (Fun Hello (f n) (Join "Hello " f " " n))
+  (Hello "John" "Doe")
+`;
 type Tokens = Tokenize<Code>;
 type Parsed = Parse<Tokens>;
 type Analyzed = AnalyzeSequence<Parsed>;
