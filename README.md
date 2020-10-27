@@ -16,6 +16,12 @@ The syntax is Lisp-like. If you're not familiar with it, here's a quick comparis
  (add 3 (subtract 2 1))    add(3, subtract(2, 1))
 ```
 
+You can pass multiple expressions and the last one is returned. For example:
+
+```
+ (add 1 2) (subtract 6 1) // 5, returns the result of 6 - 2
+```
+
 The language supports booleans, numbers, strings, conditionals (if statements), and calling the following built-in functions:
 
 - `++`: Increases a number by one.
@@ -53,21 +59,21 @@ type Result = Run<'(If False "yes" "no")'>; // 'no'
 type Result = Run<'(If 1 "truthy" "nope")'>; // 'truthy'
 
 // Core functions:
-//   - Join (concat)
+// - Join (concat)
 type Result = Run<'(Join "hello" "world")'>; // 'helloworld'
 type Result = Run<'(Join "a" "b" "c" "d")'>; // 'abcd'
-//   - Equals
+// - Equals
 type Result = Run<'(Eq 2 2)'>; // true
 type Result = Run<'(Eq "you" "me")'>; // false
-//   - Logical and
+// - Logical and
 type Result = Run<'(And True True)'>; // true
-type Result = Run<'(And False False)'>; // false
-//   - Logical or
+type Result = Run<'(And False True)'>; // true
+// - Logical or
 type Result = Run<'(Or True False)'>; // true
 type Result = Run<'(Or False False)'>; // false
-//   - Increase by one
+// - Increase by one
 type Result = Run<'(++ 2)'>; // 3
-//   - Decrease by one
+// - Decrease by one
 type Result = Run<'(-- 5)'>; // 4
 
 // Variables

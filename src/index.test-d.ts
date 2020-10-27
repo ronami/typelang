@@ -20,21 +20,21 @@ expectType<Run<'(If False "yes" "no")'>>('no');
 expectType<Run<'(If 1 "truthy" "nope")'>>('truthy');
 
 // Core functions:
-//   - Join (concat)
+// - Join (concat)
 expectType<Run<'(Join "hello" "world")'>>('helloworld');
 expectType<Run<'(Join "a" "b" "c" "d")'>>('abcd');
-//   - Equals
+// - Equals
 expectType<Run<'(Eq 2 2)'>>(true);
 expectType<Run<'(Eq "you" "me")'>>(false);
-//   - Logical and
+// - Logical and
 expectType<Run<'(And True True)'>>(true);
 expectType<Run<'(And False False)'>>(false);
-//   - Logical or
+// - Logical or
 expectType<Run<'(Or True False)'>>(true);
-expectType<Run<'(Or False False)'>>(false);
-//   - Increase by one
+expectType<Run<'(Or False True)'>>(true);
+// - Increase by one
 expectType<Run<'(++ 2)'>>('3');
-//   - Decrease by one
+// - Decrease by one
 expectType<Run<'(-- 5)'>>('4');
 
 // Variables
