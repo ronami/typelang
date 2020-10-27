@@ -49,6 +49,11 @@ export type DefinitionExpression<I extends Expression, V extends Expression> = {
   value: V;
 };
 
+export type ListExpression<B extends Array<Expression>> = {
+  type: 'List';
+  body: B;
+};
+
 export type CallExpression<
   C extends Expression,
   A extends Array<Expression>
@@ -66,13 +71,14 @@ export type Expression =
   | VariableExpression<any>
   | IfExpression<any, any, any>
   | DefinitionExpression<any, any>
+  | ListExpression<any>
   | CallExpression<any, Array<any>>;
 
 export type ParseInput<
   T extends Array<Token<any>>,
   F extends Token<any> = T[0]
 > = F extends ParenToken<'('>
-  ? ParseCallExpression<Tail<T>>
+  ? ParseList<Tail<T>>
   : F extends SymbolToken<'True'>
   ? [{ type: 'Boolean'; value: true }, Tail<T>]
   : F extends SymbolToken<'False'>
@@ -87,35 +93,11 @@ export type ParseInput<
   ? [{ type: 'Variable'; value: V }, Tail<T>]
   : [never, []];
 
-type ParseCallExpression<T extends Array<Token<any>>> = ParseArgs<
-  T
-> extends infer G
-  ? Cast<G, Array<any>>[0] extends infer H
-    ? [
-        Cast<H, Array<any>>[0] extends VariableExpression<'If'>
-          ? {
-              type: 'If';
-              predicate: Cast<H, Array<any>>[1];
-              then: Cast<H, Array<any>>[2];
-              else: Cast<H, Array<any>>[3];
-            }
-          : Cast<H, Array<any>>[0] extends VariableExpression<'Def'>
-          ? {
-              type: 'Definition';
-              identifier: Cast<H, Array<any>>[1];
-              value: Cast<H, Array<any>>[2];
-            }
-          : {
-              type: 'Call';
-              callee: Cast<H, Array<any>>[0];
-              arguments: Tail<Cast<H, Array<any>>>;
-            },
-        Cast<G, Array<any>>[1],
-      ]
-    : never
+type ParseList<T extends Array<Token<any>>> = ParseListBody<T> extends infer G
+  ? [{ type: 'List'; body: Cast<G, Array<any>>[0] }, Cast<G, Array<any>>[1]]
   : never;
 
-type ParseArgs<
+type ParseListBody<
   T extends Array<Token<any>>,
   R extends Array<Expression> = [],
   F extends Token<any> = T[0]
@@ -124,7 +106,7 @@ type ParseArgs<
   : T extends []
   ? never
   : ParseInput<T> extends infer G
-  ? ParseArgs<Cast<G, Array<any>>[1], Unshift<R, Cast<G, Array<any>>[0]>>
+  ? ParseListBody<Cast<G, Array<any>>[1], Unshift<R, Cast<G, Array<any>>[0]>>
   : never;
 
 export type ParseSequence<
