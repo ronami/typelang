@@ -31,6 +31,18 @@ The language supports booleans, numbers, strings, conditionals (if statements), 
 - `Or`: Returns `true` if at least one of its arguments are `true`.
 - `Join`: Concatenates two strings together.
 
+To declare a variable, use the `Def` keyword. This example initializes `x` to `3`:
+
+```
+(Def x 3)
+```
+
+To define a function, use the `Fun` keyword. You pass the name of the function, the arguments that it takes, and finally, its body. The following example defines a function that adds a question mark (`?`) to its input:
+
+```
+(Def Ask (q) (Join q "?"))
+```
+
 ### Try running the code ([See it live]())
 
 Install `typelang` with `npm install typelang` or with `yarn install typelang` (requires TypeScript v4.1.0 or above).
