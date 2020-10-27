@@ -1,7 +1,7 @@
 import type { Tokenize } from './tokenize';
 import type { Parse } from './parse';
 import type { EvalAndReturnLast } from './eval';
-import type { Cast } from './generalUtils';
+import type { Cast } from './utils/generalUtils';
 import type { AnalyzeSequence } from './analyze';
 
 // Just an example, hover each step to see its output

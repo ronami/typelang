@@ -1,5 +1,5 @@
-import type { Tail } from './arrayUtils';
-import type { ConcatStrings } from './stringUtils';
+import type { Tail } from './utils/arrayUtils';
+import type { ConcatStrings } from './utils/stringUtils';
 
 // Equals
 export type Equals<A, B> = A extends B ? (B extends A ? true : false) : false;

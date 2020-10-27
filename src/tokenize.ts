@@ -1,6 +1,6 @@
-import type { Reverse, Unshift } from './arrayUtils';
-import type { EatFirstChar, FirstChar, ConcatStrings } from './stringUtils';
-import type { Numbers, Symbols } from './generalUtils';
+import type { Reverse, Unshift } from './utils/arrayUtils';
+import type { EatFirstChar, FirstChar, ConcatStrings } from './utils/stringUtils';
+import type { Numbers, Symbols } from './utils/generalUtils';
 import type { Token } from './dataTypes';
 
 type TokenizeInput<I extends string> = FirstChar<I> extends ' ' | '\n'

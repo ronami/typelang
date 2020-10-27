@@ -10,9 +10,9 @@ import type {
   StringExpression,
   VariableExpression,
 } from './dataTypes';
-import type { Reverse, Tail, Unshift } from './arrayUtils';
 import type { And, Dec, Equals, Inc, Join, Or } from './builtInFunctions';
-import type { Cast, MergeWithOverride } from './generalUtils';
+import type { Reverse, Tail, Unshift } from './utils/arrayUtils';
+import type { Cast, MergeWithOverride } from './utils/generalUtils';
 
 type State = Record<string, any>;
 

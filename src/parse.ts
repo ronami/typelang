@@ -1,5 +1,5 @@
-import type { Reverse, Tail, Unshift } from './arrayUtils';
-import type { Cast } from './generalUtils';
+import type { Reverse, Tail, Unshift } from './utils/arrayUtils';
+import type { Cast } from './utils/generalUtils';
 import type {
   Expression,
   Token,
