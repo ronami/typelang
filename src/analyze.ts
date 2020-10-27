@@ -30,17 +30,20 @@ export type AnalyzeInput<T extends Expression> = T extends ListExpression<
         : never
       : V extends 'Fun'
       ? AnalyzeSequence<B> extends infer C
-        ? {
-            type: 'Function';
-            identifier: Cast<C, Array<any>>[1];
-            arguments: B[2] extends ListExpression<infer A> ? A : never;
-            body: Cast<C, Array<any>>[3];
-          }
+        ? B[2] extends ListExpression<Array<VariableExpression<string>>>
+          ? {
+              type: 'FunctionDeclaration';
+              identifier: Cast<C, Array<any>>[1];
+              arguments: B[2]['body'];
+
+              body: Cast<C, Array<any>>[3];
+            }
+          : never
         : never
       : V extends 'Def'
       ? AnalyzeSequence<B> extends infer C
         ? {
-            type: 'Definition';
+            type: 'VariableDeclaration';
             identifier: Cast<C, Array<any>>[1];
             value: Cast<C, Array<any>>[2];
           }

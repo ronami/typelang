@@ -54,6 +54,10 @@ expectType<
 >('Hello John Doe');
 // - Variables declared inside a function can't be accessed from outside
 expectType<Run<'(Fun Add2 (n) (Def n 5)) n'>>(null);
+// - Functions scope can still access global variables
+expectType<Run<'(Def x "!") (Fun AddBang (i) (Join i x)) (AddBang "hey")'>>(
+  'hey!',
+);
 
 // Composite scripts
 expectType<Run<'(Eq (++ 1) 1)'>>(false);

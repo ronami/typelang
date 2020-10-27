@@ -49,8 +49,11 @@ export type IfExpression<
   else: E;
 };
 
-export type DefinitionExpression<I extends Expression, V extends Expression> = {
-  type: 'Definition';
+export type VariableDeclarationExpression<
+  I extends Expression,
+  V extends Expression
+> = {
+  type: 'VariableDeclaration';
   identifier: I;
   value: V;
 };
@@ -69,12 +72,12 @@ export type CallExpression<
   arguments: A;
 };
 
-export type FunctionExpression<
+export type FunctionDeclarationExpression<
   I extends Expression,
   A extends Array<Expression>,
   B extends Expression
 > = {
-  type: 'Function';
+  type: 'FunctionDeclaration';
   identifier: I;
   arguments: A;
   body: B;
@@ -87,7 +90,7 @@ export type Expression =
   | StringExpression<any>
   | VariableExpression<any>
   | IfExpression<any, any, any>
-  | DefinitionExpression<any, any>
+  | VariableDeclarationExpression<any, any>
   | ListExpression<any>
   | CallExpression<any, Array<any>>
-  | FunctionExpression<any, any, any>;
+  | FunctionDeclarationExpression<any, any, any>;
