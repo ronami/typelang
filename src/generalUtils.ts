@@ -1,5 +1,7 @@
 export type Cast<A, B> = A extends B ? A : B;
 
+export type MergeWithOverride<T1, T2> = Omit<T1, keyof T2> & T2;
+
 export type Numbers = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 
 export type Symbols =

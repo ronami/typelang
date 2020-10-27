@@ -12,7 +12,7 @@ import type {
 } from './dataTypes';
 import type { Reverse, Tail, Unshift } from './arrayUtils';
 import type { And, Dec, Equals, Inc, Join, Or } from './builtInFunctions';
-import type { Cast } from './generalUtils';
+import type { Cast, MergeWithOverride } from './generalUtils';
 
 type State = Record<string, any>;
 
@@ -47,7 +47,7 @@ type EvalFunctionDeclarationExpression<
   A extends Array<Expression>,
   B extends Expression
 > = I extends VariableExpression<infer N>
-  ? [S & { [a in N]: FunctionState<A, B> }, null]
+  ? [MergeWithOverride<S, { [a in N]: FunctionState<A, B> }>, null]
   : never;
 
 type EvalVariableDeclarationExpression<
@@ -57,7 +57,10 @@ type EvalVariableDeclarationExpression<
 > = Eval<S, V> extends infer G
   ? I extends VariableExpression<infer N>
     ? [
-        Cast<G, Array<any>>[0] & { [a in N]: Cast<G, Array<any>>[1] },
+        MergeWithOverride<
+          Cast<G, Array<any>>[0],
+          { [a in N]: Cast<G, Array<any>>[1] }
+        >,
         Cast<G, Array<any>>[1],
       ]
     : never
@@ -119,7 +122,11 @@ type CreateFunctionApplicationScope<
 > = A extends []
   ? R
   : A[0] extends VariableExpression<infer V>
-  ? CreateFunctionApplicationScope<Tail<G>, Tail<A>, R & { [a in V]: G[0] }>
+  ? CreateFunctionApplicationScope<
+      Tail<G>,
+      Tail<A>,
+      MergeWithOverride<R, { [a in V]: G[0] }>
+    >
   : never;
 
 type EvalFunctionApplication<

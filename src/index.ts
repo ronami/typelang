@@ -5,8 +5,7 @@ import type { Cast } from './generalUtils';
 import type { AnalyzeSequence } from './analyze';
 
 type Code = `
-  (Fun Hello (f n) (Join "Hello " f " " n))
-  (Hello "John" "Doe")
+  (Def x 3) (Fun Add (x) (++ x)) (Add 1)
 `;
 type Tokens = Tokenize<Code>;
 type Parsed = Parse<Tokens>;

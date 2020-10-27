@@ -58,6 +58,8 @@ expectType<Run<'(Fun Add2 (n) (Def n 5)) n'>>(null);
 expectType<Run<'(Def x "!") (Fun AddBang (i) (Join i x)) (AddBang "hey")'>>(
   'hey!',
 );
+// - Functions scope can overshadow global scope
+expectType<Run<'(Def x 3) (Fun Add (x) (++ x)) (Add 1)'>>('2');
 
 // Composite scripts
 expectType<Run<'(Eq (++ 1) 1)'>>(false);
