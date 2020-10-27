@@ -9,5 +9,8 @@
       // Fix for https://github.com/jaredpalmer/tsdx/issues/279
       "version": "999.999.999"
     }
+  },
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "off"
   }
 }

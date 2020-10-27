@@ -35,7 +35,6 @@ export type AnalyzeInput<T extends Expression> = T extends ListExpression<
               type: 'FunctionDeclaration';
               identifier: Cast<C, Array<any>>[1];
               arguments: B[2]['body'];
-
               body: Cast<C, Array<any>>[3];
             }
           : never

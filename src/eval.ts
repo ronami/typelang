@@ -16,7 +16,10 @@ import type { Cast, MergeWithOverride } from './generalUtils';
 
 type State = Record<string, any>;
 
-type Eval<S extends State, E extends Expression> = E extends NullExpression
+type EvalExpression<
+  S extends State,
+  E extends Expression
+> = E extends NullExpression
   ? [S, null]
   : E extends BooleanExpression<infer V>
   ? [S, V]
@@ -54,7 +57,7 @@ type EvalVariableDeclarationExpression<
   S extends State,
   I extends Expression,
   V extends Expression
-> = Eval<S, V> extends infer G
+> = EvalExpression<S, V> extends infer G
   ? I extends VariableExpression<infer N>
     ? [
         MergeWithOverride<
@@ -71,10 +74,10 @@ type EvalIfExpression<
   P extends Expression,
   T extends Expression,
   E extends Expression
-> = Eval<S, P> extends infer G
+> = EvalExpression<S, P> extends infer G
   ? Cast<G, Array<any>>[1] extends false
-    ? Eval<Cast<G, Array<any>>[0], E>
-    : Eval<Cast<G, Array<any>>[0], T>
+    ? EvalExpression<Cast<G, Array<any>>[0], E>
+    : EvalExpression<Cast<G, Array<any>>[0], T>
   : never;
 
 type EvalCallExpression<
@@ -134,7 +137,10 @@ type EvalFunctionApplication<
   N extends string,
   G extends Array<any>
 > = S[N] extends FunctionState<infer A, infer B>
-  ? Eval<CreateFunctionApplicationScope<G[1], A, S>, B> extends infer R
+  ? EvalExpression<
+      CreateFunctionApplicationScope<G[1], A, S>,
+      B
+    > extends infer R
     ? [S, Cast<R, Array<any>>[1]]
     : never
   : never;
@@ -145,7 +151,7 @@ type EvalSequence<
   R extends Array<any> = []
 > = E extends []
   ? [S, Reverse<R>]
-  : Eval<S, E[0]> extends infer G
+  : EvalExpression<S, E[0]> extends infer G
   ? EvalSequence<
       Cast<G, Array<any>>[0],
       Tail<E>,
@@ -159,6 +165,6 @@ export type EvalAndReturnLast<
   R extends any = null
 > = E extends []
   ? R
-  : Eval<S, E[0]> extends infer G
+  : EvalExpression<S, E[0]> extends infer G
   ? EvalAndReturnLast<Cast<G, Array<any>>[0], Tail<E>, Cast<G, Array<any>>[1]>
   : never;
