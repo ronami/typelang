@@ -48,10 +48,7 @@ expectType<Eval<'(Def x (++ 3)) (Def y (++ x)) (Join "result: " y)'>>(
 
 // Function declarations
 // To declare a function: `(Fun FunctionName (arg1 arg2) (FunctionBody))`
-expectType<Eval<'(Fun Add2 (n) (++ (++ n))) (Add2 3)'>>('5');
-expectType<
-  Eval<'(Fun SayHello (f n) (Join "Hello " f " " n)) (SayHello "John" "Doe")'>
->('Hello John Doe');
+expectType<Eval<'(Fun Ask (q) (Join q "?")) (Ask "Here")'>>('Here?');
 // - Variables declared inside a function can't be accessed from outside
 expectType<Eval<'(Fun Add2 (n) (Def n 5)) n'>>(null);
 // - Functions scope can still access global variables
@@ -61,7 +58,7 @@ expectType<Eval<'(Def x "!") (Fun AddBang (i) (Join i x)) (AddBang "hey")'>>(
 // - Functions scope can overshadow global scope
 expectType<Eval<'(Def x 3) (Fun Add (x) (++ x)) (Add 1)'>>('2');
 
-// Composite scripts
+// More examples scripts
 expectType<Eval<'(Eq (++ 1) 1)'>>(false);
 expectType<Eval<'(Join (Join "foo" " " "bar") " " "baz")'>>('foo bar baz');
 expectType<Eval<'(Def n 4) (++ (++ (++ n)))'>>('7');
@@ -71,10 +68,6 @@ expectType<Eval<'(Def x "Hello") (If True (Join x " " "World!") "Bye!")'>>(
   'Hello World!',
 );
 expectType<Eval<'(Def a 3) (Def b (++ a)) (++ b)'>>('5');
-
-// Should return the last expression
-expectType<Eval<'(++ 1) (++ 2)'>>('3');
-expectType<Eval<'(Eq 1 1) (Eq 2 3)'>>(false);
 
 // Invalid syntax
 expectType<Eval<'(++ (++ '>>(this as never);

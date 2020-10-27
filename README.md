@@ -96,9 +96,8 @@ type Result = Eval<'(++ x) (Def x 2)'>; // '2'
 type Result = Eval<'(Def x (++ 3)) (Def y (++ x)) (Join "result: " y)'>; // 'result: 5'
 
 // Function declarations
-// To declare a function: `(Fun FunctionName (arg1 arg2) (FunctionBody))`
-type Result = Eval<'(Fun Add2 (n) (++ (++ n))) (Add2 3)'>; // '5'
-type Result = Eval<'(Fun SayHello (f n) (Join "Hello " f " " n)) (SayHello "John" "Doe")'>; // 'Hello John Doe'
+// To declare a function: `(Fun FunctionName (arg1 arg2 ...) (FunctionBody))`
+type Result = Eval<'(Fun Ask (q) (Join q "?")) (Ask "Here")'>; // 'Here?'
 // - Variables declared inside a function can't be accessed from outside
 type Result = Eval<'(Fun Add2 (n) (Def n 5)) n'>; // null
 // - Functions scope can still access global variables
@@ -114,10 +113,6 @@ type Result = Eval<'(If (Eq "2" "3") "equals!" "not!")'>; // 'not!'
 type Result = Eval<'(Or (Eq 3 1) (Eq 1 1))'>; // true
 type Result = Eval<'(Def x "Hello") (If True (Join x " " "World!") "Bye!")'>; // 'Hello World!'
 type Result = Eval<'(Def a 3) (Def b (++ a)) (++ b)'>; // '5'
-
-// Should return the last expression
-type Result = Eval<'(++ 1) (++ 2)'>; // '3'
-type Result = Eval<'(Eq 1 1) (Eq 2 3)'>; // false
 
 // Invalid syntax
 type Result = Eval<'(++ (++ '>; // never
