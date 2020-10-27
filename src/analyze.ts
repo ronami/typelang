@@ -1,6 +1,10 @@
 import type { Reverse, Tail, Unshift } from './arrayUtils';
 import type { Cast } from './generalUtils';
-import type { Expression, ListExpression, VariableExpression } from './parse';
+import type {
+  Expression,
+  ListExpression,
+  VariableExpression,
+} from './dataTypes';
 
 export type AnalyzeSequence<
   E extends Array<Expression>,
@@ -10,15 +14,6 @@ export type AnalyzeSequence<
   : AnalyzeInput<E[0]> extends infer G
   ? AnalyzeSequence<Tail<E>, Unshift<R, Cast<G, Expression>>>
   : never;
-
-// type AnalyzeArguments<
-//   E extends Array<Expression>,
-//   R extends Array<Expression> = []
-// > = E extends []
-//   ? Reverse<R>
-//   : AnalyzeInput<E[0]> extends infer G
-//   ? AnalyzeArguments<Tail<E>, Unshift<R, Cast<G, Expression>>>
-//   : never;
 
 export type AnalyzeInput<T extends Expression> = T extends ListExpression<
   infer B

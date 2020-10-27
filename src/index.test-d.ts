@@ -45,9 +45,15 @@ expectType<Run<'(++ x) (Def x 2)'>>('2');
 expectType<Run<'(Def x (++ 3)) (Def y (++ x)) (Join "result: " y)'>>(
   'result: 5',
 );
-expectType<Run<'(Def a "hello") (Def b "world") (Join a " " b)'>>(
-  'hello world',
-);
+
+// Function declarations
+// To declare a function: `(Fun FunctionName (arg1 arg2) (FunctionBody))`
+expectType<Run<'(Fun Add2 (n) (++ (++ n))) (Add2 3)'>>('5');
+expectType<
+  Run<'(Fun SayHello (f n) (Join "Hello " f " " n)) (SayHello "John" "Doe")'>
+>('Hello John Doe');
+// - Variables declared inside a function can't be accessed from outside
+expectType<Run<'(Fun Add2 (n) (Def n 5)) n'>>(null);
 
 // Composite scripts
 expectType<Run<'(Eq (++ 1) 1)'>>(false);

@@ -44,7 +44,7 @@ import { Run } from "typelang";
 type Result = Run<''>; // null
 
 // Numbers
-type Result = Run<'123'>; // 123
+type Result = Run<'123'>; // '123'
 
 // Strings
 type Result = Run<'"hello"'>; // 'hello'
@@ -67,34 +67,40 @@ type Result = Run<'(Eq 2 2)'>; // true
 type Result = Run<'(Eq "you" "me")'>; // false
 // - Logical and
 type Result = Run<'(And True True)'>; // true
-type Result = Run<'(And False True)'>; // true
+type Result = Run<'(And False False)'>; // false
 // - Logical or
 type Result = Run<'(Or True False)'>; // true
-type Result = Run<'(Or False False)'>; // false
+type Result = Run<'(Or False True)'>; // true
 // - Increase by one
-type Result = Run<'(++ 2)'>; // 3
+type Result = Run<'(++ 2)'>; // '3'
 // - Decrease by one
-type Result = Run<'(-- 5)'>; // 4
+type Result = Run<'(-- 5)'>; // '4'
 
 // Variables
-type Result = Run<'(Def x 1) x'>; // 1
+type Result = Run<'(Def x 1) x'>; // '1'
 type Result = Run<'undefined_variable'>; // null
-type Result = Run<'(Def x 2) (++ x)'>; // 3
-type Result = Run<'(++ x) (Def x 2)'>; // 2
+type Result = Run<'(Def x 2) (++ x)'>; // '3'
+type Result = Run<'(++ x) (Def x 2)'>; // '2'
 type Result = Run<'(Def x (++ 3)) (Def y (++ x)) (Join "result: " y)'>; // 'result: 5'
-type Result = Run<'(Def a "hello") (Def b "world") (Join a " " b)'>; // 'hello world'
+
+// Function declarations
+// To declare a function: `(Fun FunctionName (arg1 arg2) (FunctionBody))`
+type Result = Run<'(Fun Add2 (n) (++ (++ n))) (Add2 3)'>; // '5'
+type Result = Run<'(Fun SayHello (f n) (Join "Hello " f " " n)) (SayHello "John" "Doe")'>; // 'Hello John Doe'
+// - Variables declared inside a function can't be accessed from outside
+type Result = Run<'(Fun Add2 (n) (Def n 5)) n'>; // null;
 
 // Composite scripts
 type Result = Run<'(Eq (++ 1) 1)'>; // false
 type Result = Run<'(Join (Join "foo" " " "bar") " " "baz")'>; // 'foo bar baz'
-type Result = Run<'(Def n 4) (++ (++ (++ n)))'>; // 7
+type Result = Run<'(Def n 4) (++ (++ (++ n)))'>; // '7'
 type Result = Run<'(If (Eq "2" "3") "equals!" "not!")'>; // 'not!'
 type Result = Run<'(Or (Eq 3 1) (Eq 1 1))'>; // true
 type Result = Run<'(Def x "Hello") (If True (Join x " " "World!") "Bye!")'>; // 'Hello World!'
-type Result = Run<'(Def a 3) (Def b (++ a)) (++ b)'>; // 5
+type Result = Run<'(Def a 3) (Def b (++ a)) (++ b)'>; // '5'
 
 // Should return the last expression
-type Result = Run<'(++ 1) (++ 2)'>; // 3
+type Result = Run<'(++ 1) (++ 2)'>; // '3'
 type Result = Run<'(Eq 1 1) (Eq 2 3)'>; // false
 
 // Invalid syntax
