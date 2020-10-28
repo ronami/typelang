@@ -31,22 +31,48 @@ It also supports declaring variables and functions (See bellow).
 
 Install `typelang` with `npm install typelang` or with `yarn install typelang` (requires TypeScript v4.1.0 or above).
 
+#### Primitives
+
+The language has support for nulls (no value), numbers, strings, and booleans.
+
 ```typescript
 import { Eval } from "typelang";
 
-// Primitives
 type Result = Eval<''>; // null
 type Result = Eval<'123'>; // '123'
 type Result = Eval<'"hello"'>; // 'hello'
 type Result = Eval<'True'>; // true
 type Result = Eval<'False'>; // false
+```
 
-// Conditionals
+#### Conditionals
+
+If statements are in the form of:
+
+```
+(If predicate then-expression else-expression)
+```
+
+```typescript
+import { Eval } from "typelang";
+
 type Result = Eval<'(If True "yes" "no")'>; // 'yes'
 type Result = Eval<'(If False "yes" "no")'>; // 'no'
-'truthy'
+```
 
-// Calling functions:
+#### Calling functions
+
+The language supports a few built-in functions (listed above) and you can also define custom functions.
+
+Here's how you call a function:
+
+```
+(function-name arg1 arg2 arg3 ...)
+```
+
+```typescript
+import { Eval } from "typelang";
+
 type Result = Eval<'(Join "a" "b" "c" "d")'>; // 'abcd'
 
 type Result = Eval<'(Eq 2 2)'>; // true
@@ -60,8 +86,21 @@ type Result = Eval<'(Or False True)'>; // true
 
 type Result = Eval<'(++ 2)'>; // '3'
 type Result = Eval<'(-- 5)'>; // '4'
+```
 
-// Declaring variables
+#### Declaring variables
+
+Declare a variable to hold a value and reference it later on. Here's how you do it:
+
+```
+(Def variable-name value)
+```
+
+Notice that the language returns the last expression, so the first example declares a variable and then returns it:
+
+```typescript
+import { Eval } from "typelang";
+
 type Result = Eval<'(Def x 1) x'>; // '1'
 type Result = Eval<'undefined_variable'>; // null
 type Result = Eval<'(Def x 2) (++ x)'>; // '3'
@@ -70,14 +109,34 @@ type Result = Eval<`
   (Def y (++ x))
   (Join "result: " y)
 `>; // 'result: 5'
+```
 
-// Function declarations
+#### Declaring functions
+
+To declare a custom function, use the following syntax:
+
+```
+(Fun function-name (arg1 arg2) (function-body))
+```
+
+Note that you can access `arg1` and `arg2` only from inside the function body and not from outside. You can still access variables declared on the global scope from inside the function scope.
+
+```typescript
+import { Eval } from "typelang";
+
 type Result = Eval<`
   (Fun SayHello (f n) (Join "Hello " f " " n))
   (SayHello "John" "Doe")
 `>; // 'Hello John Doe'
+```
 
-// More examples scripts
+#### More examples
+
+Here are some more examples:
+
+```typescript
+import { Eval } from "typelang";
+
 type Result = Eval<'(Eq (++ 1) 1)'>; // false
 type Result = Eval<'(Join (Join "foo" " " "bar") " " "baz")'>; // 'foo bar baz'
 type Result = Eval<'(Def n 4) (++ (++ (++ n)))'>; // '7'
@@ -92,12 +151,26 @@ type Result = Eval<`
   (Def b (++ a))
   (++ b)
 `>; // '5'
+```
 
-// The last expression is returned
+#### The last expression is returned
+
+Notice that all expressions are evaluated but only the last one is returned:
+
+```typescript
+import { Eval } from "typelang";
+
 type Result = Eval<'(++ 1) (++ 2)'>; // '3'
 type Result = Eval<'(Eq 1 1) (Eq 2 3)'>; // false
+```
 
-// Invalid syntax
+#### Invalid syntax returns `never`
+
+In case of an error, `Eval` returns `never`:
+
+```typescript
+import { Eval } from "typelang";
+
 type Result = Eval<'(++ (++ '>; // never
 type Result = Eval<') ++'>; // never
 type Result = Eval<'"aa'>; // never
