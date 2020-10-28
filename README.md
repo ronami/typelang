@@ -125,7 +125,7 @@ Note that you can access `arg1` and `arg2` only from inside the function body an
 import { Eval } from "typelang";
 
 type Result = Eval<`
-  (Fun SayHello (f n) (Join "Hello " f " " n))
+  (Fun SayHello (first last) (Join "Hello " first " " last))
   (SayHello "John" "Doe")
 `>; // 'Hello John Doe'
 ```
