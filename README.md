@@ -130,29 +130,6 @@ type Result = Eval<`
 `>; // 'Hello John Doe'
 ```
 
-#### More examples
-
-Here are some more examples:
-
-```typescript
-import { Eval } from "typelang";
-
-type Result = Eval<'(Eq (++ 1) 1)'>; // false
-type Result = Eval<'(Join (Join "foo" " " "bar") " " "baz")'>; // 'foo bar baz'
-type Result = Eval<'(Def n 4) (++ (++ (++ n)))'>; // '7'
-type Result = Eval<'(If (Eq "2" "3") "equals!" "not!")'>; // 'not!'
-type Result = Eval<'(Or (Eq 3 1) (Eq 1 1))'>; // true
-type Result = Eval<`
-  (Def x "Hello")
-  (If True (Join x " " "World!") "Bye!")
-`>; // 'Hello World!'
-type Result = Eval<`
-  (Def a 3)
-  (Def b (++ a))
-  (++ b)
-`>; // '5'
-```
-
 #### The last expression is returned
 
 Notice that all expressions are evaluated but only the last one is returned:
